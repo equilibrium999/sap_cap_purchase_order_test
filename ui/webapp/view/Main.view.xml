@@ -1,0 +1,46 @@
+<mvc:View controllerName="au.com.triminhle.ui.controller.Main" xmlns:mvc="sap.ui.core.mvc" displayBlock="true" xmlns="sap.m">
+	<Shell id="shell">
+		<App id="app">
+			<pages>
+				<Page id="page" title="{i18n>title}">
+					<content>
+						<Table inset="false" items="{ path: 'odata>/PurchaseOrders', sorter: { path: 'purchaseOrder' } }">
+							<headerToolbar>
+								<OverflowToolbar>
+									<content>
+										<Title text="Purchase Orders" level="H2"/>
+										<ToolbarSpacer/>
+									</content>
+								</OverflowToolbar>
+							</headerToolbar>
+							<columns>
+								<Column width="12em">
+									<Text text="Purchaser Order No"/>
+								</Column>
+								<Column minScreenWidth="Tablet" demandPopin="true">
+									<Text text="Purchase Order Date"/>
+								</Column>
+								<Column minScreenWidth="Desktop" demandPopin="true" hAlign="End">
+									<Text text="Supplier"/>
+								</Column>
+								<Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center">
+									<Text text="Total Amount"/>
+								</Column>
+							</columns>
+							<items>
+								<ColumnListItem>
+									<cells>
+										<Text text="{odata>purchaseOrder}"/>
+										<Text text="{odata>purchaseOrderDate}"/>
+										<Text text="{odata>supplierName}"/>
+										<Text text="{odata>totalAmount}"/>
+									</cells>
+								</ColumnListItem>
+							</items>
+						</Table>
+					</content>
+				</Page>
+			</pages>
+		</App>
+	</Shell>
+</mvc:View>

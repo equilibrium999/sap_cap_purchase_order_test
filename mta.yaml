@@ -1,0 +1,103 @@
+_schema-version: "3.1"
+ID: PurchaseOrder
+description: PurchaseOrder application
+version: 1.0.0-SNAPSHOT
+modules:
+- name: PurchaseOrder-srv
+  type: java
+  path: srv
+  properties:
+    SPRING_PROFILES_ACTIVE: cloud
+  requires:
+  - name: PurchaseOrder-db
+  - name: uaa_PurchaseOrder
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  build-parameters:
+    build-result: target/*-exec.[wj]ar
+    builder: custom
+    commands:
+    - mvn clean package
+- name: PurchaseOrder-db-deployer
+  type: hdb
+  path: db
+  requires:
+  - name: PurchaseOrder-db
+  - name: uaa_PurchaseOrder
+  parameters:
+    buildpack: nodejs_buildpack
+- name: purchaseorder-approuter
+  type: approuter.nodejs
+  path: purchaseorder-approuter
+  requires:
+  - name: po_html_repo_runtime
+  - name: uaa_PurchaseOrder
+  - name: srv-api
+    group: destinations
+    properties:
+      forwardAuthToken: true
+      name: srv-api
+      url: ~{srv-url}
+  parameters:
+    disk-quota: 256M
+    memory: 256M
+- name: PurchaseOrder-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: po_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - aucomtriminhleui.zip
+      name: ui_app
+      target-path: resources/
+- name: ui_app
+  type: html5
+  path: ui
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: PurchaseOrder-db
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hanatrial
+    service-plan: hdi-shared
+  properties:
+    hdi-service-name: ${service-name}
+- name: po_html_repo_runtime
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-plan: app-runtime
+- name: uaa_PurchaseOrder
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: PurchaseOrder-xsuaa-service
+    service-plan: application
+- name: po_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-plan: app-host
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - npm install --production
+    - npx -p @sap/cds-dk cds build --production

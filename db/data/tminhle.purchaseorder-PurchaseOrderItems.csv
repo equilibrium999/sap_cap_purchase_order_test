@@ -1,0 +1,4 @@
+ID;purchaseOrder;purchaseOrderVersion;purchaseOrderItem;material_code;orderQuantity;quantityUnit;orderPrice;documentCurrency_code;dateOfDelivery;confirmedQuantity;confirmedPrice;confirmedDateOfDelivery;parentPurchaseOrder_ID
+29b69654-9166-11eb-a8b3-0242ac130003;4500000001;1;10;50000057;100;PC;2.34;EUR;2021-03-31;0;0;2021-03-31;468c9406-9100-11eb-a8b3-0242ac130003
+29b6994c-9166-11eb-a8b3-0242ac130003;4500000001;2;10;50000058;100;PC;2.34;EUR;2021-03-31;0;0;2021-03-31;468c9406-9100-11eb-a8b3-0242ac130004
+29b69a46-9166-11eb-a8b3-0242ac130003;4500000001;2;20;50000059;100;PC;2.34;EUR;2021-03-31;0;0;2021-03-31;468c9406-9100-11eb-a8b3-0242ac130004
