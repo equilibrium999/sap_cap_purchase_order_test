@@ -44,29 +44,20 @@ modules:
   parameters:
     disk-quota: 256M
     memory: 256M
-- name: po_deployer
-  type: com.sap.html5.application-content
+- name: PurchaseOrder-app-content
+  type: com.sap.application.content
   path: .
   requires:
-    - name: po_html_repo_host
+  - name: po_html_repo_host
+    parameters:
+      content-target: true
   build-parameters:
-    builder: custom
-    commands:
-      - npm run build:ui --prefix ..
-# - name: PurchaseOrder-app-content
-#   type: com.sap.application.content
-#   path: .
-#   requires:
-#   - name: po_html_repo_host
-#     parameters:
-#       content-target: true
-#   build-parameters:
-#     build-result: resources
-#     requires:
-#     - artifacts:
-#       - aucomtriminhleui.zip
-#       name: ui_app
-#       target-path: resources/
+    build-result: resources
+    requires:
+    - artifacts:
+      - aucomtriminhleui.zip
+      name: ui_app
+      target-path: resources/
 - name: ui_app
   type: html5
   path: ui
@@ -78,7 +69,7 @@ modules:
     - npm run build:cf
     supported-platforms: []
 - name: flp
-  type: com.sap.application.content
+  type: com.sap.application.portal.content
   path: flp
   requires:
   - name: po_flp
@@ -89,6 +80,7 @@ modules:
           content-endpoint: developer
         name: content-deploy-key
   - name: po_uaa
+  - name: po_html_repo_host
 resources:
 - name: po_db
   type: com.sap.xs.hdi-container
