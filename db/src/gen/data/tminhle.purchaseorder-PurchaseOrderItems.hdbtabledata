@@ -1,0 +1,51 @@
+{
+  "format_version": 1,
+  "imports": [
+    {
+      "target_table": "TMINHLE_PURCHASEORDER_PURCHASEORDERITEMS",
+      "source_data": {
+        "data_type": "CSV",
+        "file_name": "tminhle.purchaseorder-PurchaseOrderItems.csv",
+        "has_header": true,
+        "type_config": {
+          "delimiter": ";"
+        }
+      },
+      "import_settings": {
+        "import_columns": [
+          "ID",
+          "PURCHASEORDER",
+          "PURCHASEORDERVERSION",
+          "PURCHASEORDERITEM",
+          "MATERIAL_CODE",
+          "ORDERQUANTITY",
+          "QUANTITYUNIT",
+          "ORDERPRICE",
+          "DOCUMENTCURRENCY_CODE",
+          "DATEOFDELIVERY",
+          "CONFIRMEDQUANTITY",
+          "CONFIRMEDPRICE",
+          "CONFIRMEDDATEOFDELIVERY",
+          "PARENTPURCHASEORDER_ID"
+        ],
+        "include_filter": []
+      },
+      "column_mappings": {
+        "ID": "ID",
+        "PURCHASEORDER": "purchaseOrder",
+        "PURCHASEORDERVERSION": "purchaseOrderVersion",
+        "PURCHASEORDERITEM": "purchaseOrderItem",
+        "MATERIAL_CODE": "material_code",
+        "ORDERQUANTITY": "orderQuantity",
+        "QUANTITYUNIT": "quantityUnit",
+        "ORDERPRICE": "orderPrice",
+        "DOCUMENTCURRENCY_CODE": "documentCurrency_code",
+        "DATEOFDELIVERY": "dateOfDelivery",
+        "CONFIRMEDQUANTITY": "confirmedQuantity",
+        "CONFIRMEDPRICE": "confirmedPrice",
+        "CONFIRMEDDATEOFDELIVERY": "confirmedDateOfDelivery",
+        "PARENTPURCHASEORDER_ID": "parentPurchaseOrder_ID"
+      }
+    }
+  ]
+}

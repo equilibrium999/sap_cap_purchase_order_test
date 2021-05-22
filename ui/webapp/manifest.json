@@ -19,7 +19,22 @@
         "title": "{{appTitle}}",
         "description": "{{appDescription}}",
         "resources": "resources.json",
-        "ach": "ach"
+        "ach": "ach",
+        "crossNavigation": {
+            "inbounds": {
+                "fe-inbound": {
+                    "signature": {
+                        "parameters": {},
+                        "additionalParameters": "allowed"
+                    },
+                    "semanticObject": "po",
+                    "action": "display",
+                    "title": "Purchase Order List",
+                    "subTitle": "Demo",
+                    "icon": "sap-icon://sales-order"
+                }
+            }
+        }
     },
     "sap.ui": {
         "technology": "UI5",

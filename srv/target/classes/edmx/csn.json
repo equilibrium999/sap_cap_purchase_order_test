@@ -1,0 +1,6312 @@
+{
+  "namespace": "tminhle.purchaseorder",
+  "definitions": {
+    "Country": {
+      "kind": "type",
+      "type": "cds.Association",
+      "target": "sap.common.Countries",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ],
+      "@Common.Label": "{i18n>Country}",
+      "@Core.Description": "{i18n>CountryCode.Description}"
+    },
+    "Currency": {
+      "kind": "type",
+      "type": "cds.Association",
+      "target": "sap.common.Currencies",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ],
+      "@Common.Label": "{i18n>Currency}",
+      "@Core.Description": "{i18n>CurrencyCode.Description}"
+    },
+    "Language": {
+      "kind": "type",
+      "type": "cds.Association",
+      "target": "sap.common.Languages",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ],
+      "@Common.Label": "{i18n>Language}",
+      "@Core.Description": "{i18n>LanguageCode.Description}"
+    },
+    "POService": {
+      "@source": "po-service.cds",
+      "kind": "service",
+      "@requires": "admin"
+    },
+    "POService.Addresses": {
+      "kind": "entity",
+      "projection": {
+        "from": {
+          "ref": [
+            "tminhle.purchaseorder.Addresses"
+          ]
+        }
+      },
+      "elements": {
+        "code": {
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "addressName": {
+          "type": "cds.String",
+          "length": 40
+        },
+        "cityName": {
+          "type": "cds.String",
+          "length": 40
+        },
+        "faxNumber": {
+          "type": "cds.String",
+          "length": 30
+        },
+        "houseNumber": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "postalCode": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "streetName": {
+          "type": "cds.String",
+          "length": 60
+        },
+        "phoneNumber": {
+          "type": "cds.String",
+          "length": 30
+        },
+        "region": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "country": {
+          "type": "cds.String",
+          "length": 2
+        }
+      }
+    },
+    "POService.Attachments": {
+      "kind": "entity",
+      "@fiori.draft.enabled": true,
+      "@assert.unique.purchaseOrderAttachment": [
+        {
+          "=": "purchaseOrder"
+        },
+        {
+          "=": "purchaseOrderVersion"
+        },
+        {
+          "=": "purchaseOrderItem"
+        },
+        {
+          "=": "fileId"
+        }
+      ],
+      "projection": {
+        "from": {
+          "ref": [
+            "tminhle.purchaseorder.Attachments"
+          ]
+        }
+      },
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "purchaseOrder": {
+          "@mandatory": true,
+          "type": "cds.String",
+          "length": 10,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "purchaseOrderVersion": {
+          "@mandatory": true,
+          "type": "cds.Integer",
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "purchaseOrderItem": {
+          "@mandatory": true,
+          "type": "cds.Integer",
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "fileId": {
+          "@mandatory": true,
+          "type": "cds.String",
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "fileName": {
+          "type": "cds.String",
+          "length": 255
+        },
+        "fileSize": {
+          "type": "cds.Integer"
+        },
+        "mimeType": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "parentPurchaseOrder": {
+          "type": "cds.Association",
+          "target": "POService.PurchaseOrders",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ],
+              "$generatedFieldName": "parentPurchaseOrder_ID"
+            }
+          ]
+        },
+        "parentPurchaseOrder_ID": {
+          "type": "cds.UUID",
+          "@odata.foreignKey4": "parentPurchaseOrder"
+        },
+        "parentOrderItem": {
+          "type": "cds.Association",
+          "target": "POService.PurchaseOrderItems",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ],
+              "$generatedFieldName": "parentOrderItem_ID"
+            }
+          ]
+        },
+        "parentOrderItem_ID": {
+          "type": "cds.UUID",
+          "@odata.foreignKey4": "parentOrderItem"
+        }
+      },
+      "$localized": true
+    },
+    "POService.CompanyCodes": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "tminhle.purchaseorder.CompanyCodes"
+          ]
+        }
+      },
+      "elements": {
+        "name": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 4,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "POService.CompanyCodes.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "POService.CompanyCodes.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "POService.CompanyCodes.texts": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@odata.draft.enabled": false,
+      "projection": {
+        "from": {
+          "ref": [
+            "tminhle.purchaseorder.CompanyCodes.texts"
+          ]
+        }
+      },
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 4,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        }
+      }
+    },
+    "POService.Currencies": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.common.Currencies"
+          ]
+        }
+      },
+      "elements": {
+        "name": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3,
+          "@Common.Label": "{i18n>CurrencyCode}"
+        },
+        "symbol": {
+          "type": "cds.String",
+          "length": 5,
+          "@Common.Label": "{i18n>CurrencySymbol}"
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "POService.Currencies.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "POService.Currencies.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "POService.Currencies.texts": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@odata.draft.enabled": false,
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.common.Currencies.texts"
+          ]
+        }
+      },
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3,
+          "@Common.Label": "{i18n>CurrencyCode}"
+        }
+      }
+    },
+    "POService.ItemCategories": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "tminhle.purchaseorder.ItemCategories"
+          ]
+        }
+      },
+      "elements": {
+        "name": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 1,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "POService.ItemCategories.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "POService.ItemCategories.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "POService.ItemCategories.texts": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@odata.draft.enabled": false,
+      "projection": {
+        "from": {
+          "ref": [
+            "tminhle.purchaseorder.ItemCategories.texts"
+          ]
+        }
+      },
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 1,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        }
+      }
+    },
+    "POService.Languages": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.common.Languages"
+          ],
+          "as": "CommonLanguages"
+        }
+      },
+      "elements": {
+        "name": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 14,
+          "@Common.Label": "{i18n>LanguageCode}"
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "POService.Languages.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "POService.Languages.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "POService.Languages.texts": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@odata.draft.enabled": false,
+      "projection": {
+        "from": {
+          "ref": [
+            "sap.common.Languages.texts"
+          ]
+        }
+      },
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 14,
+          "@Common.Label": "{i18n>LanguageCode}"
+        }
+      }
+    },
+    "POService.MaterialGroups": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "tminhle.purchaseorder.MaterialGroups"
+          ]
+        }
+      },
+      "elements": {
+        "name": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 9,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "POService.MaterialGroups.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "POService.MaterialGroups.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "POService.MaterialGroups.texts": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@odata.draft.enabled": false,
+      "projection": {
+        "from": {
+          "ref": [
+            "tminhle.purchaseorder.MaterialGroups.texts"
+          ]
+        }
+      },
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 9,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        }
+      }
+    },
+    "POService.Materials": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "tminhle.purchaseorder.Materials"
+          ]
+        }
+      },
+      "elements": {
+        "name": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 40,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "POService.Materials.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "POService.Materials.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "POService.Materials.texts": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@odata.draft.enabled": false,
+      "projection": {
+        "from": {
+          "ref": [
+            "tminhle.purchaseorder.Materials.texts"
+          ]
+        }
+      },
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 40,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        }
+      }
+    },
+    "POService.Plants": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "tminhle.purchaseorder.Plants"
+          ]
+        }
+      },
+      "elements": {
+        "name": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 9,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "POService.Plants.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "POService.Plants.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "POService.Plants.texts": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@odata.draft.enabled": false,
+      "projection": {
+        "from": {
+          "ref": [
+            "tminhle.purchaseorder.Plants.texts"
+          ]
+        }
+      },
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 9,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        }
+      }
+    },
+    "POService.PurchaseOrderItems": {
+      "kind": "entity",
+      "@fiori.draft.enabled": true,
+      "@assert.unique.purchaseOrderItem": [
+        {
+          "=": "purchaseOrder"
+        },
+        {
+          "=": "purchaseOrderVersion"
+        },
+        {
+          "=": "purchaseOrderItem"
+        }
+      ],
+      "projection": {
+        "from": {
+          "ref": [
+            "tminhle.purchaseorder.PurchaseOrderItems"
+          ]
+        }
+      },
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedAt}"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedAt}"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "purchaseOrder": {
+          "@mandatory": true,
+          "type": "cds.String",
+          "length": 10,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "purchaseOrderVersion": {
+          "@mandatory": true,
+          "type": "cds.Integer",
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "purchaseOrderItem": {
+          "@mandatory": true,
+          "type": "cds.Integer",
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "purchaseOrderItemCat": {
+          "type": "cds.Association",
+          "target": "POService.ItemCategories",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "purchaseOrderItemCat_code"
+            }
+          ],
+          "@Common.ValueList.viaAssociation": {
+            "=": "purchaseOrderItemCat"
+          }
+        },
+        "purchaseOrderItemCat_code": {
+          "type": "cds.String",
+          "length": 1,
+          "@odata.foreignKey4": "purchaseOrderItemCat"
+        },
+        "material": {
+          "type": "cds.Association",
+          "target": "POService.Materials",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "material_code"
+            }
+          ],
+          "@Common.ValueList.viaAssociation": {
+            "=": "material"
+          }
+        },
+        "material_code": {
+          "type": "cds.String",
+          "length": 40,
+          "@odata.foreignKey4": "material"
+        },
+        "materialGroup": {
+          "type": "cds.Association",
+          "target": "POService.MaterialGroups",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "materialGroup_code"
+            }
+          ],
+          "@Common.ValueList.viaAssociation": {
+            "=": "materialGroup"
+          }
+        },
+        "materialGroup_code": {
+          "type": "cds.String",
+          "length": 9,
+          "@odata.foreignKey4": "materialGroup"
+        },
+        "plant": {
+          "type": "cds.Association",
+          "target": "POService.Plants",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "plant_code"
+            }
+          ],
+          "@Common.ValueList.viaAssociation": {
+            "=": "plant"
+          }
+        },
+        "plant_code": {
+          "type": "cds.String",
+          "length": 9,
+          "@odata.foreignKey4": "plant"
+        },
+        "supplierMaterial": {
+          "type": "cds.Association",
+          "target": "POService.Materials",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "supplierMaterial_code"
+            }
+          ],
+          "@Common.ValueList.viaAssociation": {
+            "=": "supplierMaterial"
+          }
+        },
+        "supplierMaterial_code": {
+          "type": "cds.String",
+          "length": 40,
+          "@odata.foreignKey4": "supplierMaterial"
+        },
+        "orderQuantity": {
+          "type": "cds.Decimal",
+          "precision": 13,
+          "scale": 3
+        },
+        "quantityUnit": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "orderPrice": {
+          "type": "cds.Decimal",
+          "precision": 11,
+          "scale": 2
+        },
+        "documentCurrency": {
+          "type": "cds.Association",
+          "target": "POService.Currencies",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "documentCurrency_code"
+            }
+          ],
+          "@Common.Label": "{i18n>Currency}",
+          "@Core.Description": "{i18n>CurrencyCode.Description}",
+          "@Common.ValueList.viaAssociation": {
+            "=": "documentCurrency"
+          }
+        },
+        "documentCurrency_code": {
+          "type": "cds.String",
+          "length": 3,
+          "@odata.foreignKey4": "documentCurrency",
+          "@Common.Label": "{i18n>Currency}",
+          "@Core.Description": "{i18n>CurrencyCode.Description}"
+        },
+        "priceUnit": {
+          "type": "cds.Decimal",
+          "precision": 5,
+          "scale": 0
+        },
+        "netValue": {
+          "type": "cds.Decimal",
+          "precision": 23,
+          "scale": 4
+        },
+        "grossValue": {
+          "type": "cds.Decimal",
+          "precision": 23,
+          "scale": 4
+        },
+        "dateOfDelivery": {
+          "type": "cds.Date"
+        },
+        "scheduleLineInc": {
+          "type": "cds.String",
+          "length": 1
+        },
+        "confirmationOrder": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "confirmationInc": {
+          "type": "cds.String",
+          "length": 1
+        },
+        "confirmedQuantity": {
+          "type": "cds.Decimal",
+          "precision": 13,
+          "scale": 3
+        },
+        "confirmedPrice": {
+          "type": "cds.Decimal",
+          "precision": 11,
+          "scale": 2
+        },
+        "confirmedDateOfDelivery": {
+          "type": "cds.Date"
+        },
+        "goodReceipt": {
+          "type": "cds.String",
+          "length": 25
+        },
+        "unloadingPoint": {
+          "type": "cds.String",
+          "length": 12
+        },
+        "incoTermVerion": {
+          "type": "cds.String",
+          "length": 4
+        },
+        "incoTermClassification": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "incoTermLocation1": {
+          "type": "cds.String",
+          "length": 70
+        },
+        "incoTermLocation2": {
+          "type": "cds.String",
+          "length": 70
+        },
+        "longPlainText": {
+          "type": "cds.String"
+        },
+        "deliveryAddress": {
+          "type": "cds.Association",
+          "target": "POService.Addresses",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "deliveryAddress_code"
+            }
+          ]
+        },
+        "deliveryAddress_code": {
+          "type": "cds.String",
+          "@odata.foreignKey4": "deliveryAddress"
+        },
+        "parentPurchaseOrder": {
+          "type": "cds.Association",
+          "target": "POService.PurchaseOrders",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ],
+              "$generatedFieldName": "parentPurchaseOrder_ID"
+            }
+          ]
+        },
+        "parentPurchaseOrder_ID": {
+          "type": "cds.UUID",
+          "@odata.foreignKey4": "parentPurchaseOrder"
+        },
+        "attachments": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "POService.Attachments",
+          "on": [
+            {
+              "ref": [
+                "attachments",
+                "parentOrderItem"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        },
+        "scheduleLines": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "POService.ScheduleLines",
+          "on": [
+            {
+              "ref": [
+                "scheduleLines",
+                "parentOrderItem"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        },
+        "IsActiveEntity": {
+          "type": "cds.Boolean",
+          "key": true,
+          "default": {
+            "val": true
+          },
+          "@UI.Hidden": true
+        },
+        "HasActiveEntity": {
+          "type": "cds.Boolean",
+          "default": {
+            "val": false
+          },
+          "notNull": true,
+          "@UI.Hidden": true
+        },
+        "HasDraftEntity": {
+          "type": "cds.Boolean",
+          "default": {
+            "val": false
+          },
+          "notNull": true,
+          "@UI.Hidden": true
+        },
+        "DraftAdministrativeData": {
+          "type": "cds.Association",
+          "target": "POService.DraftAdministrativeData",
+          "keys": [
+            {
+              "ref": [
+                "DraftUUID"
+              ],
+              "$generatedFieldName": "DraftAdministrativeData_DraftUUID"
+            }
+          ],
+          "cardinality": {
+            "max": 1
+          },
+          "@odata.contained": true,
+          "@UI.Hidden": true
+        },
+        "DraftAdministrativeData_DraftUUID": {
+          "type": "cds.UUID",
+          "@odata.contained": true,
+          "@UI.Hidden": true,
+          "@odata.foreignKey4": "DraftAdministrativeData"
+        },
+        "SiblingEntity": {
+          "type": "cds.Association",
+          "target": "POService.PurchaseOrderItems",
+          "cardinality": {
+            "max": 1
+          },
+          "on": [
+            {
+              "ref": [
+                "SiblingEntity",
+                "ID"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "ID"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "SiblingEntity",
+                "IsActiveEntity"
+              ]
+            },
+            "!=",
+            {
+              "ref": [
+                "IsActiveEntity"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true,
+      "@Common.DraftNode.PreparationAction": "draftPrepare",
+      "actions": {
+        "draftPrepare": {
+          "kind": "action",
+          "returns": {
+            "type": "POService.PurchaseOrderItems"
+          },
+          "params": {
+            "SideEffectsQualifier": {
+              "type": "cds.String"
+            }
+          }
+        }
+      }
+    },
+    "POService.PurchaseOrderStatuses": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@assert.unique.name": [
+        {
+          "=": "name"
+        }
+      ],
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "tminhle.purchaseorder.PurchaseOrderStatuses"
+          ]
+        }
+      },
+      "elements": {
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedAt}"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedAt}"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "name": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 2,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "POService.PurchaseOrderStatuses.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "POService.PurchaseOrderStatuses.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "POService.PurchaseOrderStatuses.texts": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@odata.draft.enabled": false,
+      "projection": {
+        "from": {
+          "ref": [
+            "tminhle.purchaseorder.PurchaseOrderStatuses.texts"
+          ]
+        }
+      },
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 2,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        }
+      }
+    },
+    "POService.PurchaseOrders": {
+      "kind": "entity",
+      "@odata.draft.enabled": true,
+      "@fiori.draft.enabled": true,
+      "@assert.unique.purchaseOrder": [
+        {
+          "=": "purchaseOrder"
+        },
+        {
+          "=": "purchaseOrderVersion"
+        }
+      ],
+      "projection": {
+        "from": {
+          "ref": [
+            "tminhle.purchaseorder.PurchaseOrders"
+          ]
+        }
+      },
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedAt}"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedAt}"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "purchaseOrder": {
+          "@mandatory": true,
+          "type": "cds.String",
+          "length": 10,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "purchaseOrderVersion": {
+          "@mandatory": true,
+          "type": "cds.Integer",
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "purchaseOrderDesc": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "purchaseOrderStatus": {
+          "type": "cds.Association",
+          "target": "POService.PurchaseOrderStatuses",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "purchaseOrderStatus_code"
+            }
+          ],
+          "@Common.ValueList.viaAssociation": {
+            "=": "purchaseOrderStatus"
+          }
+        },
+        "purchaseOrderStatus_code": {
+          "type": "cds.String",
+          "length": 2,
+          "@odata.foreignKey4": "purchaseOrderStatus"
+        },
+        "purchaseOrderDate": {
+          "type": "cds.Date"
+        },
+        "title": {
+          "type": "cds.String"
+        },
+        "language": {
+          "type": "cds.Association",
+          "target": "POService.Languages",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "language_code"
+            }
+          ],
+          "@Common.Label": "{i18n>Language}",
+          "@Core.Description": "{i18n>LanguageCode.Description}",
+          "@Common.ValueList.viaAssociation": {
+            "=": "language"
+          }
+        },
+        "language_code": {
+          "type": "cds.String",
+          "length": 14,
+          "@odata.foreignKey4": "language",
+          "@Common.Label": "{i18n>Language}",
+          "@Core.Description": "{i18n>LanguageCode.Description}"
+        },
+        "supplier": {
+          "@mandatory": true,
+          "type": "cds.String",
+          "length": 10,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "supplierName": {
+          "type": "cds.String",
+          "length": 35
+        },
+        "supplierAddress": {
+          "type": "cds.Association",
+          "target": "POService.Addresses",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "supplierAddress_code"
+            }
+          ]
+        },
+        "supplierAddress_code": {
+          "type": "cds.String",
+          "@odata.foreignKey4": "supplierAddress"
+        },
+        "totalAmount": {
+          "type": "cds.Decimal",
+          "precision": 23,
+          "scale": 4
+        },
+        "documentCurrency": {
+          "@mandatory": true,
+          "type": "cds.Association",
+          "target": "POService.Currencies",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "documentCurrency_code"
+            }
+          ],
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          },
+          "@Common.Label": "{i18n>Currency}",
+          "@Core.Description": "{i18n>CurrencyCode.Description}",
+          "@Common.ValueList.viaAssociation": {
+            "=": "documentCurrency"
+          }
+        },
+        "documentCurrency_code": {
+          "type": "cds.String",
+          "length": 3,
+          "@odata.foreignKey4": "documentCurrency",
+          "@mandatory": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          },
+          "@Common.Label": "{i18n>Currency}",
+          "@Core.Description": "{i18n>CurrencyCode.Description}"
+        },
+        "exchangeRate": {
+          "type": "cds.Decimal",
+          "precision": 9,
+          "scale": 5
+        },
+        "purchasingOrganization": {
+          "@mandatory": true,
+          "type": "cds.Association",
+          "target": "POService.PurchasingOrganizations",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "purchasingOrganization_code"
+            }
+          ],
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          },
+          "@Common.ValueList.viaAssociation": {
+            "=": "purchasingOrganization"
+          }
+        },
+        "purchasingOrganization_code": {
+          "type": "cds.String",
+          "length": 4,
+          "@odata.foreignKey4": "purchasingOrganization",
+          "@mandatory": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "purchasingGroup": {
+          "@mandatory": true,
+          "type": "cds.Association",
+          "target": "POService.PurchasingGroups",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "purchasingGroup_code"
+            }
+          ],
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          },
+          "@Common.ValueList.viaAssociation": {
+            "=": "purchasingGroup"
+          }
+        },
+        "purchasingGroup_code": {
+          "type": "cds.String",
+          "length": 3,
+          "@odata.foreignKey4": "purchasingGroup",
+          "@mandatory": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "companyCode": {
+          "@mandatory": true,
+          "type": "cds.Association",
+          "target": "POService.CompanyCodes",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "companyCode_code"
+            }
+          ],
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          },
+          "@Common.ValueList.viaAssociation": {
+            "=": "companyCode"
+          }
+        },
+        "companyCode_code": {
+          "type": "cds.String",
+          "length": 4,
+          "@odata.foreignKey4": "companyCode",
+          "@mandatory": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "orderConfirmation": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "incoTermVerion": {
+          "type": "cds.String",
+          "length": 4
+        },
+        "incoTermClassification": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "incoTermLocation1": {
+          "type": "cds.String",
+          "length": 70
+        },
+        "incoTermLocation2": {
+          "type": "cds.String",
+          "length": 70
+        },
+        "termOfPayment": {
+          "type": "cds.Association",
+          "target": "POService.TermPayments",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "termOfPayment_code"
+            }
+          ],
+          "@Common.ValueList.viaAssociation": {
+            "=": "termOfPayment"
+          }
+        },
+        "termOfPayment_code": {
+          "type": "cds.String",
+          "length": 4,
+          "@odata.foreignKey4": "termOfPayment"
+        },
+        "netPaymentTerm": {
+          "type": "cds.Decimal",
+          "precision": 3,
+          "scale": 0
+        },
+        "cashDiscount1Days": {
+          "type": "cds.Decimal",
+          "precision": 3,
+          "scale": 0
+        },
+        "cashDiscount1Percent": {
+          "type": "cds.Decimal",
+          "precision": 5,
+          "scale": 0
+        },
+        "cashDiscount2Days": {
+          "type": "cds.Decimal",
+          "precision": 3,
+          "scale": 0
+        },
+        "cashDiscount2Percent": {
+          "type": "cds.Decimal",
+          "precision": 5,
+          "scale": 0
+        },
+        "dateOfDelivery": {
+          "type": "cds.Date"
+        },
+        "startPeriod": {
+          "type": "cds.Date"
+        },
+        "endPeriod": {
+          "type": "cds.Date"
+        },
+        "plainLongText": {
+          "type": "cds.String"
+        },
+        "contactPerson": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.ContactPersons",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "contactPerson_code"
+            }
+          ]
+        },
+        "contactPerson_code": {
+          "type": "cds.String",
+          "length": 3,
+          "@odata.foreignKey4": "contactPerson"
+        },
+        "deliveryAddress": {
+          "type": "cds.Association",
+          "target": "POService.Addresses",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "deliveryAddress_code"
+            }
+          ]
+        },
+        "deliveryAddress_code": {
+          "type": "cds.String",
+          "@odata.foreignKey4": "deliveryAddress"
+        },
+        "attachments": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "POService.Attachments",
+          "on": [
+            {
+              "ref": [
+                "attachments",
+                "parentPurchaseOrder",
+                "ID"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "items": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "POService.PurchaseOrderItems",
+          "on": [
+            {
+              "ref": [
+                "items",
+                "parentPurchaseOrder"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        },
+        "IsActiveEntity": {
+          "type": "cds.Boolean",
+          "key": true,
+          "default": {
+            "val": true
+          },
+          "@UI.Hidden": true
+        },
+        "HasActiveEntity": {
+          "type": "cds.Boolean",
+          "default": {
+            "val": false
+          },
+          "notNull": true,
+          "@UI.Hidden": true
+        },
+        "HasDraftEntity": {
+          "type": "cds.Boolean",
+          "default": {
+            "val": false
+          },
+          "notNull": true,
+          "@UI.Hidden": true
+        },
+        "DraftAdministrativeData": {
+          "type": "cds.Association",
+          "target": "POService.DraftAdministrativeData",
+          "keys": [
+            {
+              "ref": [
+                "DraftUUID"
+              ],
+              "$generatedFieldName": "DraftAdministrativeData_DraftUUID"
+            }
+          ],
+          "cardinality": {
+            "max": 1
+          },
+          "@odata.contained": true,
+          "@UI.Hidden": true
+        },
+        "DraftAdministrativeData_DraftUUID": {
+          "type": "cds.UUID",
+          "@odata.contained": true,
+          "@UI.Hidden": true,
+          "@odata.foreignKey4": "DraftAdministrativeData"
+        },
+        "SiblingEntity": {
+          "type": "cds.Association",
+          "target": "POService.PurchaseOrders",
+          "cardinality": {
+            "max": 1
+          },
+          "on": [
+            {
+              "ref": [
+                "SiblingEntity",
+                "ID"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "ID"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "SiblingEntity",
+                "IsActiveEntity"
+              ]
+            },
+            "!=",
+            {
+              "ref": [
+                "IsActiveEntity"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true,
+      "@Common.DraftRoot.ActivationAction": "draftActivate",
+      "@Common.DraftRoot.EditAction": "draftEdit",
+      "@Common.DraftRoot.PreparationAction": "draftPrepare",
+      "actions": {
+        "draftPrepare": {
+          "kind": "action",
+          "returns": {
+            "type": "POService.PurchaseOrders"
+          },
+          "params": {
+            "SideEffectsQualifier": {
+              "type": "cds.String"
+            }
+          }
+        },
+        "draftActivate": {
+          "kind": "action",
+          "returns": {
+            "type": "POService.PurchaseOrders"
+          }
+        },
+        "draftEdit": {
+          "kind": "action",
+          "returns": {
+            "type": "POService.PurchaseOrders"
+          },
+          "params": {
+            "PreserveChanges": {
+              "type": "cds.Boolean"
+            }
+          }
+        }
+      }
+    },
+    "POService.PurchasingGroups": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "tminhle.purchaseorder.PurchasingGroups"
+          ]
+        }
+      },
+      "elements": {
+        "name": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 3,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "POService.PurchasingGroups.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "POService.PurchasingGroups.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "POService.PurchasingGroups.texts": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@odata.draft.enabled": false,
+      "projection": {
+        "from": {
+          "ref": [
+            "tminhle.purchaseorder.PurchasingGroups.texts"
+          ]
+        }
+      },
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 3,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        }
+      }
+    },
+    "POService.PurchasingOrganizations": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "tminhle.purchaseorder.PurchasingOrganizations"
+          ]
+        }
+      },
+      "elements": {
+        "name": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 4,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "POService.PurchasingOrganizations.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "POService.PurchasingOrganizations.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "POService.PurchasingOrganizations.texts": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@odata.draft.enabled": false,
+      "projection": {
+        "from": {
+          "ref": [
+            "tminhle.purchaseorder.PurchasingOrganizations.texts"
+          ]
+        }
+      },
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 4,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        }
+      }
+    },
+    "POService.ScheduleLines": {
+      "kind": "entity",
+      "@fiori.draft.enabled": true,
+      "@assert.unique.scheduleLine": [
+        {
+          "=": "purchaseOrder"
+        },
+        {
+          "=": "purchaseOrderVersion"
+        },
+        {
+          "=": "purchaseOrderItem"
+        },
+        {
+          "=": "scheduleLine"
+        }
+      ],
+      "projection": {
+        "from": {
+          "ref": [
+            "tminhle.purchaseorder.ScheduleLines"
+          ]
+        }
+      },
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedAt}"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedAt}"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "purchaseOrder": {
+          "@mandatory": true,
+          "type": "cds.String",
+          "length": 10,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "purchaseOrderVersion": {
+          "@mandatory": true,
+          "type": "cds.Integer",
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "purchaseOrderItem": {
+          "@mandatory": true,
+          "type": "cds.Integer",
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "scheduleLine": {
+          "@mandatory": true,
+          "type": "cds.Integer",
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "dateOfDeliveryCategory": {
+          "type": "cds.String",
+          "length": 1
+        },
+        "dateOfDelivery": {
+          "type": "cds.Date"
+        },
+        "scheduleLineQuantity": {
+          "type": "cds.Decimal",
+          "precision": 13,
+          "scale": 3
+        },
+        "quantityUnit": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "confirmedQuantity": {
+          "type": "cds.Decimal",
+          "precision": 13,
+          "scale": 3
+        },
+        "confirmedDateOfDelivery": {
+          "type": "cds.Date"
+        },
+        "parentOrderItem": {
+          "type": "cds.Association",
+          "target": "POService.PurchaseOrderItems",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ],
+              "$generatedFieldName": "parentOrderItem_ID"
+            }
+          ]
+        },
+        "parentOrderItem_ID": {
+          "type": "cds.UUID",
+          "@odata.foreignKey4": "parentOrderItem"
+        },
+        "IsActiveEntity": {
+          "type": "cds.Boolean",
+          "key": true,
+          "default": {
+            "val": true
+          },
+          "@UI.Hidden": true
+        },
+        "HasActiveEntity": {
+          "type": "cds.Boolean",
+          "default": {
+            "val": false
+          },
+          "notNull": true,
+          "@UI.Hidden": true
+        },
+        "HasDraftEntity": {
+          "type": "cds.Boolean",
+          "default": {
+            "val": false
+          },
+          "notNull": true,
+          "@UI.Hidden": true
+        },
+        "DraftAdministrativeData": {
+          "type": "cds.Association",
+          "target": "POService.DraftAdministrativeData",
+          "keys": [
+            {
+              "ref": [
+                "DraftUUID"
+              ],
+              "$generatedFieldName": "DraftAdministrativeData_DraftUUID"
+            }
+          ],
+          "cardinality": {
+            "max": 1
+          },
+          "@odata.contained": true,
+          "@UI.Hidden": true
+        },
+        "DraftAdministrativeData_DraftUUID": {
+          "type": "cds.UUID",
+          "@odata.contained": true,
+          "@UI.Hidden": true,
+          "@odata.foreignKey4": "DraftAdministrativeData"
+        },
+        "SiblingEntity": {
+          "type": "cds.Association",
+          "target": "POService.ScheduleLines",
+          "cardinality": {
+            "max": 1
+          },
+          "on": [
+            {
+              "ref": [
+                "SiblingEntity",
+                "ID"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "ID"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "SiblingEntity",
+                "IsActiveEntity"
+              ]
+            },
+            "!=",
+            {
+              "ref": [
+                "IsActiveEntity"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true,
+      "@Common.DraftNode.PreparationAction": "draftPrepare",
+      "actions": {
+        "draftPrepare": {
+          "kind": "action",
+          "returns": {
+            "type": "POService.ScheduleLines"
+          },
+          "params": {
+            "SideEffectsQualifier": {
+              "type": "cds.String"
+            }
+          }
+        }
+      }
+    },
+    "POService.TermPayments": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "projection": {
+        "from": {
+          "ref": [
+            "tminhle.purchaseorder.TermPayments"
+          ]
+        }
+      },
+      "elements": {
+        "name": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 4,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "POService.TermPayments.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "POService.TermPayments.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "POService.TermPayments.texts": {
+      "kind": "entity",
+      "@cds.autoexposed": true,
+      "@odata.draft.enabled": false,
+      "projection": {
+        "from": {
+          "ref": [
+            "tminhle.purchaseorder.TermPayments.texts"
+          ]
+        }
+      },
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 4,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        }
+      }
+    },
+    "User": {
+      "kind": "type",
+      "type": "cds.String",
+      "length": 255,
+      "@Common.Label": "{i18n>UserID}",
+      "@Core.Description": "{i18n>UserID.Description}"
+    },
+    "cuid": {
+      "kind": "aspect",
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        }
+      }
+    },
+    "managed": {
+      "kind": "aspect",
+      "elements": {
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedAt}"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedAt}"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        }
+      }
+    },
+    "sap.common": {
+      "kind": "context"
+    },
+    "sap.common.CodeList": {
+      "kind": "aspect",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "elements": {
+        "name": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        }
+      }
+    },
+    "sap.common.Countries": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3,
+          "@Common.Label": "{i18n>CountryCode}"
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.common.Countries.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "sap.common.Countries.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "sap.common.Countries.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3,
+          "@Common.Label": "{i18n>CountryCode}"
+        }
+      }
+    },
+    "sap.common.Currencies": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3,
+          "@Common.Label": "{i18n>CurrencyCode}"
+        },
+        "symbol": {
+          "type": "cds.String",
+          "length": 5,
+          "@Common.Label": "{i18n>CurrencySymbol}"
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.common.Currencies.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "sap.common.Currencies.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "sap.common.Currencies.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 3,
+          "@Common.Label": "{i18n>CurrencyCode}"
+        }
+      }
+    },
+    "sap.common.Languages": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 14,
+          "@Common.Label": "{i18n>LanguageCode}"
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "sap.common.Languages.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "sap.common.Languages.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "sap.common.Languages.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@Common.Text": {
+            "=": "name"
+          },
+          "key": true,
+          "type": "cds.String",
+          "length": 14,
+          "@Common.Label": "{i18n>LanguageCode}"
+        }
+      }
+    },
+    "temporal": {
+      "kind": "aspect",
+      "elements": {
+        "validFrom": {
+          "@cds.valid.from": true,
+          "type": "cds.Timestamp"
+        },
+        "validTo": {
+          "@cds.valid.to": true,
+          "type": "cds.Timestamp"
+        }
+      }
+    },
+    "tminhle.purchaseorder.Address": {
+      "kind": "type",
+      "type": "cds.Association",
+      "target": "tminhle.purchaseorder.Addresses",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ]
+    },
+    "tminhle.purchaseorder.Addresses": {
+      "kind": "entity",
+      "elements": {
+        "code": {
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "addressName": {
+          "type": "cds.String",
+          "length": 40
+        },
+        "cityName": {
+          "type": "cds.String",
+          "length": 40
+        },
+        "faxNumber": {
+          "type": "cds.String",
+          "length": 30
+        },
+        "houseNumber": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "postalCode": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "streetName": {
+          "type": "cds.String",
+          "length": 60
+        },
+        "phoneNumber": {
+          "type": "cds.String",
+          "length": 30
+        },
+        "region": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "country": {
+          "type": "cds.String",
+          "length": 2
+        }
+      }
+    },
+    "tminhle.purchaseorder.Attachments": {
+      "kind": "entity",
+      "@fiori.draft.enabled": true,
+      "@assert.unique.purchaseOrderAttachment": [
+        {
+          "=": "purchaseOrder"
+        },
+        {
+          "=": "purchaseOrderVersion"
+        },
+        {
+          "=": "purchaseOrderItem"
+        },
+        {
+          "=": "fileId"
+        }
+      ],
+      "includes": [
+        "cuid"
+      ],
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "purchaseOrder": {
+          "@mandatory": true,
+          "type": "cds.String",
+          "length": 10,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "purchaseOrderVersion": {
+          "@mandatory": true,
+          "type": "cds.Integer",
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "purchaseOrderItem": {
+          "@mandatory": true,
+          "type": "cds.Integer",
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "fileId": {
+          "@mandatory": true,
+          "type": "cds.String",
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "fileName": {
+          "type": "cds.String",
+          "length": 255
+        },
+        "fileSize": {
+          "type": "cds.Integer"
+        },
+        "mimeType": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "parentPurchaseOrder": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.PurchaseOrders",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ],
+              "$generatedFieldName": "parentPurchaseOrder_ID"
+            }
+          ]
+        },
+        "parentPurchaseOrder_ID": {
+          "type": "cds.UUID",
+          "@odata.foreignKey4": "parentPurchaseOrder"
+        },
+        "parentOrderItem": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.PurchaseOrderItems",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ],
+              "$generatedFieldName": "parentOrderItem_ID"
+            }
+          ]
+        },
+        "parentOrderItem_ID": {
+          "type": "cds.UUID",
+          "@odata.foreignKey4": "parentOrderItem"
+        }
+      },
+      "$localized": true
+    },
+    "tminhle.purchaseorder.CompanyCodes": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 4,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "tminhle.purchaseorder.CompanyCodes.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.CompanyCodes.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "tminhle.purchaseorder.CompanyCodes.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 4,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        }
+      }
+    },
+    "tminhle.purchaseorder.Company_Code": {
+      "kind": "type",
+      "type": "cds.Association",
+      "target": "tminhle.purchaseorder.CompanyCodes",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ]
+    },
+    "tminhle.purchaseorder.ContactPersons": {
+      "kind": "entity",
+      "elements": {
+        "code": {
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 3,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "name": {
+          "type": "cds.String",
+          "length": 18
+        },
+        "faxNumber": {
+          "type": "cds.String",
+          "length": 31
+        },
+        "telNumber": {
+          "type": "cds.String",
+          "length": 30
+        },
+        "email": {
+          "type": "cds.String",
+          "length": 241
+        }
+      }
+    },
+    "tminhle.purchaseorder.Contact_Person": {
+      "kind": "type",
+      "type": "cds.Association",
+      "target": "tminhle.purchaseorder.ContactPersons",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ]
+    },
+    "tminhle.purchaseorder.ItemCategories": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 1,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "tminhle.purchaseorder.ItemCategories.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.ItemCategories.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "tminhle.purchaseorder.ItemCategories.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 1,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        }
+      }
+    },
+    "tminhle.purchaseorder.Item_Category": {
+      "kind": "type",
+      "type": "cds.Association",
+      "target": "tminhle.purchaseorder.ItemCategories",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ]
+    },
+    "tminhle.purchaseorder.Material": {
+      "kind": "type",
+      "type": "cds.Association",
+      "target": "tminhle.purchaseorder.Materials",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ]
+    },
+    "tminhle.purchaseorder.MaterialGroups": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 9,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "tminhle.purchaseorder.MaterialGroups.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.MaterialGroups.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "tminhle.purchaseorder.MaterialGroups.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 9,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        }
+      }
+    },
+    "tminhle.purchaseorder.Material_Group": {
+      "kind": "type",
+      "type": "cds.Association",
+      "target": "tminhle.purchaseorder.MaterialGroups",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ]
+    },
+    "tminhle.purchaseorder.Materials": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 40,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "tminhle.purchaseorder.Materials.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.Materials.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "tminhle.purchaseorder.Materials.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 40,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        }
+      }
+    },
+    "tminhle.purchaseorder.Plant": {
+      "kind": "type",
+      "type": "cds.Association",
+      "target": "tminhle.purchaseorder.Plants",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ]
+    },
+    "tminhle.purchaseorder.Plants": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 9,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "tminhle.purchaseorder.Plants.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.Plants.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "tminhle.purchaseorder.Plants.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 9,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        }
+      }
+    },
+    "tminhle.purchaseorder.PurchaseOrderItems": {
+      "kind": "entity",
+      "@fiori.draft.enabled": true,
+      "@assert.unique.purchaseOrderItem": [
+        {
+          "=": "purchaseOrder"
+        },
+        {
+          "=": "purchaseOrderVersion"
+        },
+        {
+          "=": "purchaseOrderItem"
+        }
+      ],
+      "includes": [
+        "cuid",
+        "managed"
+      ],
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedAt}"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedAt}"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "purchaseOrder": {
+          "@mandatory": true,
+          "type": "cds.String",
+          "length": 10,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "purchaseOrderVersion": {
+          "@mandatory": true,
+          "type": "cds.Integer",
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "purchaseOrderItem": {
+          "@mandatory": true,
+          "type": "cds.Integer",
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "purchaseOrderItemCat": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.ItemCategories",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "purchaseOrderItemCat_code"
+            }
+          ]
+        },
+        "purchaseOrderItemCat_code": {
+          "type": "cds.String",
+          "length": 1,
+          "@odata.foreignKey4": "purchaseOrderItemCat"
+        },
+        "material": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.Materials",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "material_code"
+            }
+          ]
+        },
+        "material_code": {
+          "type": "cds.String",
+          "length": 40,
+          "@odata.foreignKey4": "material"
+        },
+        "materialGroup": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.MaterialGroups",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "materialGroup_code"
+            }
+          ]
+        },
+        "materialGroup_code": {
+          "type": "cds.String",
+          "length": 9,
+          "@odata.foreignKey4": "materialGroup"
+        },
+        "plant": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.Plants",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "plant_code"
+            }
+          ]
+        },
+        "plant_code": {
+          "type": "cds.String",
+          "length": 9,
+          "@odata.foreignKey4": "plant"
+        },
+        "supplierMaterial": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.Materials",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "supplierMaterial_code"
+            }
+          ]
+        },
+        "supplierMaterial_code": {
+          "type": "cds.String",
+          "length": 40,
+          "@odata.foreignKey4": "supplierMaterial"
+        },
+        "orderQuantity": {
+          "type": "cds.Decimal",
+          "precision": 13,
+          "scale": 3
+        },
+        "quantityUnit": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "orderPrice": {
+          "type": "cds.Decimal",
+          "precision": 11,
+          "scale": 2
+        },
+        "documentCurrency": {
+          "type": "cds.Association",
+          "target": "sap.common.Currencies",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "documentCurrency_code"
+            }
+          ],
+          "@Common.Label": "{i18n>Currency}",
+          "@Core.Description": "{i18n>CurrencyCode.Description}"
+        },
+        "documentCurrency_code": {
+          "type": "cds.String",
+          "length": 3,
+          "@odata.foreignKey4": "documentCurrency",
+          "@Common.Label": "{i18n>Currency}",
+          "@Core.Description": "{i18n>CurrencyCode.Description}"
+        },
+        "priceUnit": {
+          "type": "cds.Decimal",
+          "precision": 5,
+          "scale": 0
+        },
+        "netValue": {
+          "type": "cds.Decimal",
+          "precision": 23,
+          "scale": 4
+        },
+        "grossValue": {
+          "type": "cds.Decimal",
+          "precision": 23,
+          "scale": 4
+        },
+        "dateOfDelivery": {
+          "type": "cds.Date"
+        },
+        "scheduleLineInc": {
+          "type": "cds.String",
+          "length": 1
+        },
+        "confirmationOrder": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "confirmationInc": {
+          "type": "cds.String",
+          "length": 1
+        },
+        "confirmedQuantity": {
+          "type": "cds.Decimal",
+          "precision": 13,
+          "scale": 3
+        },
+        "confirmedPrice": {
+          "type": "cds.Decimal",
+          "precision": 11,
+          "scale": 2
+        },
+        "confirmedDateOfDelivery": {
+          "type": "cds.Date"
+        },
+        "goodReceipt": {
+          "type": "cds.String",
+          "length": 25
+        },
+        "unloadingPoint": {
+          "type": "cds.String",
+          "length": 12
+        },
+        "incoTermVerion": {
+          "type": "cds.String",
+          "length": 4
+        },
+        "incoTermClassification": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "incoTermLocation1": {
+          "type": "cds.String",
+          "length": 70
+        },
+        "incoTermLocation2": {
+          "type": "cds.String",
+          "length": 70
+        },
+        "longPlainText": {
+          "type": "cds.String"
+        },
+        "deliveryAddress": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.Addresses",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "deliveryAddress_code"
+            }
+          ]
+        },
+        "deliveryAddress_code": {
+          "type": "cds.String",
+          "@odata.foreignKey4": "deliveryAddress"
+        },
+        "parentPurchaseOrder": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.PurchaseOrders",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ],
+              "$generatedFieldName": "parentPurchaseOrder_ID"
+            }
+          ]
+        },
+        "parentPurchaseOrder_ID": {
+          "type": "cds.UUID",
+          "@odata.foreignKey4": "parentPurchaseOrder"
+        },
+        "attachments": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "tminhle.purchaseorder.Attachments",
+          "on": [
+            {
+              "ref": [
+                "attachments",
+                "parentOrderItem"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        },
+        "scheduleLines": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "tminhle.purchaseorder.ScheduleLines",
+          "on": [
+            {
+              "ref": [
+                "scheduleLines",
+                "parentOrderItem"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "tminhle.purchaseorder.PurchaseOrderStatuses": {
+      "kind": "entity",
+      "@assert.unique.name": [
+        {
+          "=": "name"
+        }
+      ],
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "managed",
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedAt}"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedAt}"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "name": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 2,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "tminhle.purchaseorder.PurchaseOrderStatuses.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.PurchaseOrderStatuses.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "tminhle.purchaseorder.PurchaseOrderStatuses.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 2,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        }
+      }
+    },
+    "tminhle.purchaseorder.PurchaseOrders": {
+      "kind": "entity",
+      "@fiori.draft.enabled": true,
+      "@assert.unique.purchaseOrder": [
+        {
+          "=": "purchaseOrder"
+        },
+        {
+          "=": "purchaseOrderVersion"
+        }
+      ],
+      "includes": [
+        "cuid",
+        "managed"
+      ],
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedAt}"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedAt}"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "purchaseOrder": {
+          "@mandatory": true,
+          "type": "cds.String",
+          "length": 10,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "purchaseOrderVersion": {
+          "@mandatory": true,
+          "type": "cds.Integer",
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "purchaseOrderDesc": {
+          "type": "cds.String",
+          "length": 100
+        },
+        "purchaseOrderStatus": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.PurchaseOrderStatuses",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "purchaseOrderStatus_code"
+            }
+          ]
+        },
+        "purchaseOrderStatus_code": {
+          "type": "cds.String",
+          "length": 2,
+          "@odata.foreignKey4": "purchaseOrderStatus"
+        },
+        "purchaseOrderDate": {
+          "type": "cds.Date"
+        },
+        "title": {
+          "type": "cds.String"
+        },
+        "language": {
+          "type": "cds.Association",
+          "target": "sap.common.Languages",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "language_code"
+            }
+          ],
+          "@Common.Label": "{i18n>Language}",
+          "@Core.Description": "{i18n>LanguageCode.Description}"
+        },
+        "language_code": {
+          "type": "cds.String",
+          "length": 14,
+          "@odata.foreignKey4": "language",
+          "@Common.Label": "{i18n>Language}",
+          "@Core.Description": "{i18n>LanguageCode.Description}"
+        },
+        "supplier": {
+          "@mandatory": true,
+          "type": "cds.String",
+          "length": 10,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "supplierName": {
+          "type": "cds.String",
+          "length": 35
+        },
+        "supplierAddress": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.Addresses",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "supplierAddress_code"
+            }
+          ]
+        },
+        "supplierAddress_code": {
+          "type": "cds.String",
+          "@odata.foreignKey4": "supplierAddress"
+        },
+        "totalAmount": {
+          "type": "cds.Decimal",
+          "precision": 23,
+          "scale": 4
+        },
+        "documentCurrency": {
+          "@mandatory": true,
+          "type": "cds.Association",
+          "target": "sap.common.Currencies",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "documentCurrency_code"
+            }
+          ],
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          },
+          "@Common.Label": "{i18n>Currency}",
+          "@Core.Description": "{i18n>CurrencyCode.Description}"
+        },
+        "documentCurrency_code": {
+          "type": "cds.String",
+          "length": 3,
+          "@odata.foreignKey4": "documentCurrency",
+          "@mandatory": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          },
+          "@Common.Label": "{i18n>Currency}",
+          "@Core.Description": "{i18n>CurrencyCode.Description}"
+        },
+        "exchangeRate": {
+          "type": "cds.Decimal",
+          "precision": 9,
+          "scale": 5
+        },
+        "purchasingOrganization": {
+          "@mandatory": true,
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.PurchasingOrganizations",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "purchasingOrganization_code"
+            }
+          ],
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "purchasingOrganization_code": {
+          "type": "cds.String",
+          "length": 4,
+          "@odata.foreignKey4": "purchasingOrganization",
+          "@mandatory": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "purchasingGroup": {
+          "@mandatory": true,
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.PurchasingGroups",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "purchasingGroup_code"
+            }
+          ],
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "purchasingGroup_code": {
+          "type": "cds.String",
+          "length": 3,
+          "@odata.foreignKey4": "purchasingGroup",
+          "@mandatory": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "companyCode": {
+          "@mandatory": true,
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.CompanyCodes",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "companyCode_code"
+            }
+          ],
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "companyCode_code": {
+          "type": "cds.String",
+          "length": 4,
+          "@odata.foreignKey4": "companyCode",
+          "@mandatory": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "orderConfirmation": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "incoTermVerion": {
+          "type": "cds.String",
+          "length": 4
+        },
+        "incoTermClassification": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "incoTermLocation1": {
+          "type": "cds.String",
+          "length": 70
+        },
+        "incoTermLocation2": {
+          "type": "cds.String",
+          "length": 70
+        },
+        "termOfPayment": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.TermPayments",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "termOfPayment_code"
+            }
+          ]
+        },
+        "termOfPayment_code": {
+          "type": "cds.String",
+          "length": 4,
+          "@odata.foreignKey4": "termOfPayment"
+        },
+        "netPaymentTerm": {
+          "type": "cds.Decimal",
+          "precision": 3,
+          "scale": 0
+        },
+        "cashDiscount1Days": {
+          "type": "cds.Decimal",
+          "precision": 3,
+          "scale": 0
+        },
+        "cashDiscount1Percent": {
+          "type": "cds.Decimal",
+          "precision": 5,
+          "scale": 0
+        },
+        "cashDiscount2Days": {
+          "type": "cds.Decimal",
+          "precision": 3,
+          "scale": 0
+        },
+        "cashDiscount2Percent": {
+          "type": "cds.Decimal",
+          "precision": 5,
+          "scale": 0
+        },
+        "dateOfDelivery": {
+          "type": "cds.Date"
+        },
+        "startPeriod": {
+          "type": "cds.Date"
+        },
+        "endPeriod": {
+          "type": "cds.Date"
+        },
+        "plainLongText": {
+          "type": "cds.String"
+        },
+        "contactPerson": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.ContactPersons",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "contactPerson_code"
+            }
+          ]
+        },
+        "contactPerson_code": {
+          "type": "cds.String",
+          "length": 3,
+          "@odata.foreignKey4": "contactPerson"
+        },
+        "deliveryAddress": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.Addresses",
+          "keys": [
+            {
+              "ref": [
+                "code"
+              ],
+              "$generatedFieldName": "deliveryAddress_code"
+            }
+          ]
+        },
+        "deliveryAddress_code": {
+          "type": "cds.String",
+          "@odata.foreignKey4": "deliveryAddress"
+        },
+        "attachments": {
+          "type": "cds.Association",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "tminhle.purchaseorder.Attachments",
+          "on": [
+            {
+              "ref": [
+                "attachments",
+                "parentPurchaseOrder",
+                "ID"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "ID"
+              ]
+            }
+          ]
+        },
+        "items": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "tminhle.purchaseorder.PurchaseOrderItems",
+          "on": [
+            {
+              "ref": [
+                "items",
+                "parentPurchaseOrder"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$self"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "tminhle.purchaseorder.Purchase_Order_Status": {
+      "kind": "type",
+      "type": "cds.Association",
+      "target": "tminhle.purchaseorder.PurchaseOrderStatuses",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ]
+    },
+    "tminhle.purchaseorder.PurchasingGroups": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 3,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "tminhle.purchaseorder.PurchasingGroups.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.PurchasingGroups.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "tminhle.purchaseorder.PurchasingGroups.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 3,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        }
+      }
+    },
+    "tminhle.purchaseorder.PurchasingOrganizations": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 4,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "tminhle.purchaseorder.PurchasingOrganizations.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.PurchasingOrganizations.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "tminhle.purchaseorder.PurchasingOrganizations.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 4,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        }
+      }
+    },
+    "tminhle.purchaseorder.Purchasing_Group": {
+      "kind": "type",
+      "type": "cds.Association",
+      "target": "tminhle.purchaseorder.PurchasingGroups",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ]
+    },
+    "tminhle.purchaseorder.Purchasing_Organization": {
+      "kind": "type",
+      "type": "cds.Association",
+      "target": "tminhle.purchaseorder.PurchasingOrganizations",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ]
+    },
+    "tminhle.purchaseorder.ScheduleLines": {
+      "kind": "entity",
+      "@fiori.draft.enabled": true,
+      "@assert.unique.scheduleLine": [
+        {
+          "=": "purchaseOrder"
+        },
+        {
+          "=": "purchaseOrderVersion"
+        },
+        {
+          "=": "purchaseOrderItem"
+        },
+        {
+          "=": "scheduleLine"
+        }
+      ],
+      "includes": [
+        "cuid",
+        "managed"
+      ],
+      "elements": {
+        "ID": {
+          "key": true,
+          "type": "cds.UUID"
+        },
+        "createdAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedAt}"
+        },
+        "createdBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@Core.Immutable": true,
+          "@readonly": true,
+          "@odata.on.insert": {
+            "#": "user"
+          },
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>CreatedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "modifiedAt": {
+          "@cds.on.insert": {
+            "=": "$now"
+          },
+          "@cds.on.update": {
+            "=": "$now"
+          },
+          "@UI.HiddenFilter": true,
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "now"
+          },
+          "type": "cds.Timestamp",
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedAt}"
+        },
+        "modifiedBy": {
+          "@cds.on.insert": {
+            "=": "$user"
+          },
+          "@cds.on.update": {
+            "=": "$user"
+          },
+          "@UI.HiddenFilter": true,
+          "@readonly": true,
+          "@odata.on.update": {
+            "#": "user"
+          },
+          "type": "cds.String",
+          "length": 255,
+          "@Core.Computed": true,
+          "@Common.Label": "{i18n>ChangedBy}",
+          "@Core.Description": "{i18n>UserID.Description}"
+        },
+        "purchaseOrder": {
+          "@mandatory": true,
+          "type": "cds.String",
+          "length": 10,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "purchaseOrderVersion": {
+          "@mandatory": true,
+          "type": "cds.Integer",
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "purchaseOrderItem": {
+          "@mandatory": true,
+          "type": "cds.Integer",
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "scheduleLine": {
+          "@mandatory": true,
+          "type": "cds.Integer",
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "dateOfDeliveryCategory": {
+          "type": "cds.String",
+          "length": 1
+        },
+        "dateOfDelivery": {
+          "type": "cds.Date"
+        },
+        "scheduleLineQuantity": {
+          "type": "cds.Decimal",
+          "precision": 13,
+          "scale": 3
+        },
+        "quantityUnit": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "confirmedQuantity": {
+          "type": "cds.Decimal",
+          "precision": 13,
+          "scale": 3
+        },
+        "confirmedDateOfDelivery": {
+          "type": "cds.Date"
+        },
+        "parentOrderItem": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.PurchaseOrderItems",
+          "keys": [
+            {
+              "ref": [
+                "ID"
+              ],
+              "$generatedFieldName": "parentOrderItem_ID"
+            }
+          ]
+        },
+        "parentOrderItem_ID": {
+          "type": "cds.UUID",
+          "@odata.foreignKey4": "parentOrderItem"
+        }
+      },
+      "$localized": true
+    },
+    "tminhle.purchaseorder.TermPayments": {
+      "kind": "entity",
+      "@cds.autoexpose": true,
+      "@cds.persistence.skip": "if-unused",
+      "@UI.Identification": [
+        {
+          "Value": {
+            "=": "name"
+          }
+        }
+      ],
+      "@cds.odata.valuelist": true,
+      "includes": [
+        "sap.common.CodeList"
+      ],
+      "elements": {
+        "name": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": true,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 4,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        },
+        "texts": {
+          "type": "cds.Composition",
+          "cardinality": {
+            "max": "*"
+          },
+          "target": "tminhle.purchaseorder.TermPayments.texts",
+          "on": [
+            {
+              "ref": [
+                "texts",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            }
+          ]
+        },
+        "localized": {
+          "type": "cds.Association",
+          "target": "tminhle.purchaseorder.TermPayments.texts",
+          "on": [
+            {
+              "ref": [
+                "localized",
+                "code"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "code"
+              ]
+            },
+            "and",
+            {
+              "ref": [
+                "localized",
+                "locale"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "$user",
+                "locale"
+              ]
+            }
+          ]
+        }
+      },
+      "$localized": true
+    },
+    "tminhle.purchaseorder.TermPayments.texts": {
+      "kind": "entity",
+      "@odata.draft.enabled": false,
+      "elements": {
+        "locale": {
+          "key": true,
+          "type": "cds.String",
+          "length": 14
+        },
+        "name": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 255,
+          "@Common.Label": "{i18n>Name}"
+        },
+        "descr": {
+          "localized": false,
+          "type": "cds.String",
+          "length": 1000,
+          "@Common.Label": "{i18n>Description}"
+        },
+        "code": {
+          "@odata.containment.ignore": true,
+          "@mandatory": true,
+          "key": true,
+          "type": "cds.String",
+          "length": 4,
+          "notNull": true,
+          "@Common.FieldControl": {
+            "#": "Mandatory"
+          }
+        }
+      }
+    },
+    "tminhle.purchaseorder.Term_Payment": {
+      "kind": "type",
+      "type": "cds.Association",
+      "target": "tminhle.purchaseorder.TermPayments",
+      "keys": [
+        {
+          "ref": [
+            "code"
+          ]
+        }
+      ]
+    },
+    "DRAFT.DraftAdministrativeData": {
+      "kind": "entity",
+      "elements": {
+        "DraftUUID": {
+          "type": "cds.UUID",
+          "key": true,
+          "@UI.Hidden": true,
+          "@Common.Label": "{i18n>Draft_DraftUUID}"
+        },
+        "CreationDateTime": {
+          "type": "cds.Timestamp",
+          "@Common.Label": "{i18n>Draft_CreationDateTime}"
+        },
+        "CreatedByUser": {
+          "type": "cds.String",
+          "length": 256,
+          "@Common.Label": "{i18n>Draft_CreatedByUser}"
+        },
+        "DraftIsCreatedByMe": {
+          "type": "cds.Boolean",
+          "@UI.Hidden": true,
+          "@Common.Label": "{i18n>Draft_DraftIsCreatedByMe}"
+        },
+        "LastChangeDateTime": {
+          "type": "cds.Timestamp",
+          "@Common.Label": "{i18n>Draft_LastChangeDateTime}"
+        },
+        "LastChangedByUser": {
+          "type": "cds.String",
+          "length": 256,
+          "@Common.Label": "{i18n>Draft_LastChangedByUser}"
+        },
+        "InProcessByUser": {
+          "type": "cds.String",
+          "length": 256,
+          "@Common.Label": "{i18n>Draft_InProcessByUser}"
+        },
+        "DraftIsProcessedByMe": {
+          "type": "cds.Boolean",
+          "@UI.Hidden": true,
+          "@Common.Label": "{i18n>Draft_DraftIsProcessedByMe}"
+        }
+      },
+      "@Common.Label": "{i18n>Draft_DraftAdministrativeData}"
+    },
+    "POService.DraftAdministrativeData": {
+      "kind": "entity",
+      "projection": {
+        "from": {
+          "ref": [
+            "DRAFT.DraftAdministrativeData"
+          ]
+        }
+      },
+      "elements": {
+        "DraftUUID": {
+          "type": "cds.UUID",
+          "key": true,
+          "@UI.Hidden": true,
+          "@Common.Label": "{i18n>Draft_DraftUUID}"
+        },
+        "CreationDateTime": {
+          "type": "cds.Timestamp",
+          "@Common.Label": "{i18n>Draft_CreationDateTime}"
+        },
+        "CreatedByUser": {
+          "type": "cds.String",
+          "length": 256,
+          "@Common.Label": "{i18n>Draft_CreatedByUser}"
+        },
+        "DraftIsCreatedByMe": {
+          "type": "cds.Boolean",
+          "@UI.Hidden": true,
+          "@Common.Label": "{i18n>Draft_DraftIsCreatedByMe}"
+        },
+        "LastChangeDateTime": {
+          "type": "cds.Timestamp",
+          "@Common.Label": "{i18n>Draft_LastChangeDateTime}"
+        },
+        "LastChangedByUser": {
+          "type": "cds.String",
+          "length": 256,
+          "@Common.Label": "{i18n>Draft_LastChangedByUser}"
+        },
+        "InProcessByUser": {
+          "type": "cds.String",
+          "length": 256,
+          "@Common.Label": "{i18n>Draft_InProcessByUser}"
+        },
+        "DraftIsProcessedByMe": {
+          "type": "cds.Boolean",
+          "@UI.Hidden": true,
+          "@Common.Label": "{i18n>Draft_DraftIsProcessedByMe}"
+        }
+      },
+      "@Common.Label": "{i18n>Draft_DraftAdministrativeData}"
+    }
+  },
+  "$version": "2.0",
+  "meta": {
+    "creator": "CDS Compiler v2.2.6",
+    "flavor": "inferred"
+  }
+}

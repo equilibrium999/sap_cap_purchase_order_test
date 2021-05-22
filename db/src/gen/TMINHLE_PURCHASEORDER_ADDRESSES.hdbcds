@@ -1,0 +1,12 @@
+entity TMINHLE_PURCHASEORDER_ADDRESSES {
+  key CODE : String(5000) not null;
+  ADDRESSNAME : String(40);
+  CITYNAME : String(40);
+  FAXNUMBER : String(30);
+  HOUSENUMBER : String(10);
+  POSTALCODE : String(10);
+  STREETNAME : String(60);
+  PHONENUMBER : String(30);
+  REGION : String(3);
+  COUNTRY : String(2);
+};

@@ -9,8 +9,8 @@ modules:
   properties:
     SPRING_PROFILES_ACTIVE: cloud
   requires:
-  - name: PurchaseOrder-db
-  - name: uaa_PurchaseOrder
+  - name: po_db
+  - name: po_uaa
   provides:
   - name: srv-api
     properties:
@@ -24,8 +24,8 @@ modules:
   type: hdb
   path: db
   requires:
-  - name: PurchaseOrder-db
-  - name: uaa_PurchaseOrder
+  - name: po_db
+  - name: po_uaa
   parameters:
     buildpack: nodejs_buildpack
 - name: purchaseorder-approuter
@@ -33,30 +33,40 @@ modules:
   path: purchaseorder-approuter
   requires:
   - name: po_html_repo_runtime
-  - name: uaa_PurchaseOrder
+  - name: po_uaa
   - name: srv-api
     group: destinations
     properties:
       forwardAuthToken: true
       name: srv-api
       url: ~{srv-url}
+  - name: po_flp
   parameters:
     disk-quota: 256M
     memory: 256M
-- name: PurchaseOrder-app-content
-  type: com.sap.application.content
+- name: po_deployer
+  type: com.sap.html5.application-content
   path: .
   requires:
-  - name: po_html_repo_host
-    parameters:
-      content-target: true
+    - name: po_html_repo_host
   build-parameters:
-    build-result: resources
-    requires:
-    - artifacts:
-      - aucomtriminhleui.zip
-      name: ui_app
-      target-path: resources/
+    builder: custom
+    commands:
+      - npm run build:ui --prefix ..
+# - name: PurchaseOrder-app-content
+#   type: com.sap.application.content
+#   path: .
+#   requires:
+#   - name: po_html_repo_host
+#     parameters:
+#       content-target: true
+#   build-parameters:
+#     build-result: resources
+#     requires:
+#     - artifacts:
+#       - aucomtriminhleui.zip
+#       name: ui_app
+#       target-path: resources/
 - name: ui_app
   type: html5
   path: ui
@@ -67,8 +77,20 @@ modules:
     - npm install
     - npm run build:cf
     supported-platforms: []
+- name: flp
+  type: com.sap.application.content
+  path: flp
+  requires:
+  - name: po_flp
+    parameters:
+      content-target: true
+      service-key:
+        config:
+          content-endpoint: developer
+        name: content-deploy-key
+  - name: po_uaa
 resources:
-- name: PurchaseOrder-db
+- name: po_db
   type: com.sap.xs.hdi-container
   parameters:
     service: hanatrial
@@ -80,7 +102,7 @@ resources:
   parameters:
     service: html5-apps-repo
     service-plan: app-runtime
-- name: uaa_PurchaseOrder
+- name: po_uaa
   type: org.cloudfoundry.managed-service
   parameters:
     path: ./xs-security.json
@@ -92,6 +114,11 @@ resources:
   parameters:
     service: html5-apps-repo
     service-plan: app-host
+- name: po_flp
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: portal
+    service-plan: standard
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true

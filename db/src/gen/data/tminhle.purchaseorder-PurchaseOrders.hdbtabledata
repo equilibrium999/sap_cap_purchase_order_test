@@ -1,0 +1,47 @@
+{
+  "format_version": 1,
+  "imports": [
+    {
+      "target_table": "TMINHLE_PURCHASEORDER_PURCHASEORDERS",
+      "source_data": {
+        "data_type": "CSV",
+        "file_name": "tminhle.purchaseorder-PurchaseOrders.csv",
+        "has_header": true,
+        "type_config": {
+          "delimiter": ";"
+        }
+      },
+      "import_settings": {
+        "import_columns": [
+          "ID",
+          "PURCHASEORDER",
+          "PURCHASEORDERVERSION",
+          "PURCHASEORDERDESC",
+          "PURCHASEORDERSTATUS_CODE",
+          "PURCHASEORDERDATE",
+          "TITLE",
+          "SUPPLIER",
+          "SUPPLIERNAME",
+          "ORDERCONFIRMATION",
+          "DATEOFDELIVERY",
+          "TOTALAMOUNT"
+        ],
+        "include_filter": []
+      },
+      "column_mappings": {
+        "ID": "ID",
+        "PURCHASEORDER": "purchaseOrder",
+        "PURCHASEORDERVERSION": "purchaseOrderVersion",
+        "PURCHASEORDERDESC": "purchaseOrderDesc",
+        "PURCHASEORDERSTATUS_CODE": "purchaseOrderStatus_code",
+        "PURCHASEORDERDATE": "purchaseOrderDate",
+        "TITLE": "title",
+        "SUPPLIER": "supplier",
+        "SUPPLIERNAME": "supplierName",
+        "ORDERCONFIRMATION": "orderConfirmation",
+        "DATEOFDELIVERY": "dateOfDelivery",
+        "TOTALAMOUNT": "totalAmount"
+      }
+    }
+  ]
+}

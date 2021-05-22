@@ -1,0 +1,7 @@
+entity TMINHLE_PURCHASEORDER_CONTACTPERSONS {
+  key CODE : String(3) not null;
+  NAME : String(18);
+  FAXNUMBER : String(31);
+  TELNUMBER : String(30);
+  EMAIL : String(241);
+};

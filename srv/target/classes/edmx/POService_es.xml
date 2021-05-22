@@ -1,0 +1,1439 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+    <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+    <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+    <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+  </edmx:Reference>
+  <edmx:DataServices>
+    <Schema Namespace="POService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <EntityContainer Name="EntityContainer">
+        <EntitySet Name="Addresses" EntityType="POService.Addresses"/>
+        <EntitySet Name="Attachments" EntityType="POService.Attachments">
+          <NavigationPropertyBinding Path="parentPurchaseOrder" Target="PurchaseOrders"/>
+          <NavigationPropertyBinding Path="parentOrderItem" Target="PurchaseOrderItems"/>
+        </EntitySet>
+        <EntitySet Name="CompanyCodes" EntityType="POService.CompanyCodes">
+          <NavigationPropertyBinding Path="texts" Target="CompanyCodes_texts"/>
+          <NavigationPropertyBinding Path="localized" Target="CompanyCodes_texts"/>
+        </EntitySet>
+        <EntitySet Name="Currencies" EntityType="POService.Currencies">
+          <NavigationPropertyBinding Path="texts" Target="Currencies_texts"/>
+          <NavigationPropertyBinding Path="localized" Target="Currencies_texts"/>
+        </EntitySet>
+        <EntitySet Name="ItemCategories" EntityType="POService.ItemCategories">
+          <NavigationPropertyBinding Path="texts" Target="ItemCategories_texts"/>
+          <NavigationPropertyBinding Path="localized" Target="ItemCategories_texts"/>
+        </EntitySet>
+        <EntitySet Name="Languages" EntityType="POService.Languages">
+          <NavigationPropertyBinding Path="texts" Target="Languages_texts"/>
+          <NavigationPropertyBinding Path="localized" Target="Languages_texts"/>
+        </EntitySet>
+        <EntitySet Name="MaterialGroups" EntityType="POService.MaterialGroups">
+          <NavigationPropertyBinding Path="texts" Target="MaterialGroups_texts"/>
+          <NavigationPropertyBinding Path="localized" Target="MaterialGroups_texts"/>
+        </EntitySet>
+        <EntitySet Name="Materials" EntityType="POService.Materials">
+          <NavigationPropertyBinding Path="texts" Target="Materials_texts"/>
+          <NavigationPropertyBinding Path="localized" Target="Materials_texts"/>
+        </EntitySet>
+        <EntitySet Name="Plants" EntityType="POService.Plants">
+          <NavigationPropertyBinding Path="texts" Target="Plants_texts"/>
+          <NavigationPropertyBinding Path="localized" Target="Plants_texts"/>
+        </EntitySet>
+        <EntitySet Name="PurchaseOrderItems" EntityType="POService.PurchaseOrderItems">
+          <NavigationPropertyBinding Path="purchaseOrderItemCat" Target="ItemCategories"/>
+          <NavigationPropertyBinding Path="material" Target="Materials"/>
+          <NavigationPropertyBinding Path="materialGroup" Target="MaterialGroups"/>
+          <NavigationPropertyBinding Path="plant" Target="Plants"/>
+          <NavigationPropertyBinding Path="supplierMaterial" Target="Materials"/>
+          <NavigationPropertyBinding Path="documentCurrency" Target="Currencies"/>
+          <NavigationPropertyBinding Path="deliveryAddress" Target="Addresses"/>
+          <NavigationPropertyBinding Path="parentPurchaseOrder" Target="PurchaseOrders"/>
+          <NavigationPropertyBinding Path="attachments" Target="Attachments"/>
+          <NavigationPropertyBinding Path="scheduleLines" Target="ScheduleLines"/>
+          <NavigationPropertyBinding Path="SiblingEntity" Target="PurchaseOrderItems"/>
+        </EntitySet>
+        <EntitySet Name="PurchaseOrderStatuses" EntityType="POService.PurchaseOrderStatuses">
+          <NavigationPropertyBinding Path="texts" Target="PurchaseOrderStatuses_texts"/>
+          <NavigationPropertyBinding Path="localized" Target="PurchaseOrderStatuses_texts"/>
+        </EntitySet>
+        <EntitySet Name="PurchaseOrders" EntityType="POService.PurchaseOrders">
+          <NavigationPropertyBinding Path="purchaseOrderStatus" Target="PurchaseOrderStatuses"/>
+          <NavigationPropertyBinding Path="language" Target="Languages"/>
+          <NavigationPropertyBinding Path="supplierAddress" Target="Addresses"/>
+          <NavigationPropertyBinding Path="documentCurrency" Target="Currencies"/>
+          <NavigationPropertyBinding Path="purchasingOrganization" Target="PurchasingOrganizations"/>
+          <NavigationPropertyBinding Path="purchasingGroup" Target="PurchasingGroups"/>
+          <NavigationPropertyBinding Path="companyCode" Target="CompanyCodes"/>
+          <NavigationPropertyBinding Path="termOfPayment" Target="TermPayments"/>
+          <NavigationPropertyBinding Path="deliveryAddress" Target="Addresses"/>
+          <NavigationPropertyBinding Path="attachments" Target="Attachments"/>
+          <NavigationPropertyBinding Path="items" Target="PurchaseOrderItems"/>
+          <NavigationPropertyBinding Path="SiblingEntity" Target="PurchaseOrders"/>
+        </EntitySet>
+        <EntitySet Name="PurchasingGroups" EntityType="POService.PurchasingGroups">
+          <NavigationPropertyBinding Path="texts" Target="PurchasingGroups_texts"/>
+          <NavigationPropertyBinding Path="localized" Target="PurchasingGroups_texts"/>
+        </EntitySet>
+        <EntitySet Name="PurchasingOrganizations" EntityType="POService.PurchasingOrganizations">
+          <NavigationPropertyBinding Path="texts" Target="PurchasingOrganizations_texts"/>
+          <NavigationPropertyBinding Path="localized" Target="PurchasingOrganizations_texts"/>
+        </EntitySet>
+        <EntitySet Name="ScheduleLines" EntityType="POService.ScheduleLines">
+          <NavigationPropertyBinding Path="parentOrderItem" Target="PurchaseOrderItems"/>
+          <NavigationPropertyBinding Path="SiblingEntity" Target="ScheduleLines"/>
+        </EntitySet>
+        <EntitySet Name="TermPayments" EntityType="POService.TermPayments">
+          <NavigationPropertyBinding Path="texts" Target="TermPayments_texts"/>
+          <NavigationPropertyBinding Path="localized" Target="TermPayments_texts"/>
+        </EntitySet>
+        <EntitySet Name="CompanyCodes_texts" EntityType="POService.CompanyCodes_texts"/>
+        <EntitySet Name="Currencies_texts" EntityType="POService.Currencies_texts"/>
+        <EntitySet Name="ItemCategories_texts" EntityType="POService.ItemCategories_texts"/>
+        <EntitySet Name="Languages_texts" EntityType="POService.Languages_texts"/>
+        <EntitySet Name="MaterialGroups_texts" EntityType="POService.MaterialGroups_texts"/>
+        <EntitySet Name="Materials_texts" EntityType="POService.Materials_texts"/>
+        <EntitySet Name="Plants_texts" EntityType="POService.Plants_texts"/>
+        <EntitySet Name="PurchaseOrderStatuses_texts" EntityType="POService.PurchaseOrderStatuses_texts"/>
+        <EntitySet Name="PurchasingGroups_texts" EntityType="POService.PurchasingGroups_texts"/>
+        <EntitySet Name="PurchasingOrganizations_texts" EntityType="POService.PurchasingOrganizations_texts"/>
+        <EntitySet Name="TermPayments_texts" EntityType="POService.TermPayments_texts"/>
+      </EntityContainer>
+      <EntityType Name="Addresses">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="code" Type="Edm.String" Nullable="false"/>
+        <Property Name="addressName" Type="Edm.String" MaxLength="40"/>
+        <Property Name="cityName" Type="Edm.String" MaxLength="40"/>
+        <Property Name="faxNumber" Type="Edm.String" MaxLength="30"/>
+        <Property Name="houseNumber" Type="Edm.String" MaxLength="10"/>
+        <Property Name="postalCode" Type="Edm.String" MaxLength="10"/>
+        <Property Name="streetName" Type="Edm.String" MaxLength="60"/>
+        <Property Name="phoneNumber" Type="Edm.String" MaxLength="30"/>
+        <Property Name="region" Type="Edm.String" MaxLength="3"/>
+        <Property Name="country" Type="Edm.String" MaxLength="2"/>
+      </EntityType>
+      <EntityType Name="Attachments">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="purchaseOrder" Type="Edm.String" MaxLength="10" Nullable="false"/>
+        <Property Name="purchaseOrderVersion" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="purchaseOrderItem" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="fileId" Type="Edm.String" Nullable="false"/>
+        <Property Name="fileName" Type="Edm.String" MaxLength="255"/>
+        <Property Name="fileSize" Type="Edm.Int32"/>
+        <Property Name="mimeType" Type="Edm.String" MaxLength="100"/>
+        <NavigationProperty Name="parentPurchaseOrder" Type="POService.PurchaseOrders">
+          <ReferentialConstraint Property="parentPurchaseOrder_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="parentPurchaseOrder_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="parentOrderItem" Type="POService.PurchaseOrderItems" Partner="attachments">
+          <ReferentialConstraint Property="parentOrderItem_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="parentOrderItem_ID" Type="Edm.Guid"/>
+      </EntityType>
+      <EntityType Name="CompanyCodes">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="4" Nullable="false"/>
+        <NavigationProperty Name="texts" Type="Collection(POService.CompanyCodes_texts)">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="localized" Type="POService.CompanyCodes_texts">
+          <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="Currencies">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+        <Property Name="symbol" Type="Edm.String" MaxLength="5"/>
+        <NavigationProperty Name="texts" Type="Collection(POService.Currencies_texts)">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="localized" Type="POService.Currencies_texts">
+          <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="DraftAdministrativeData">
+        <Key>
+          <PropertyRef Name="DraftUUID"/>
+        </Key>
+        <Property Name="DraftUUID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="CreationDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="CreatedByUser" Type="Edm.String" MaxLength="256"/>
+        <Property Name="DraftIsCreatedByMe" Type="Edm.Boolean"/>
+        <Property Name="LastChangeDateTime" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="LastChangedByUser" Type="Edm.String" MaxLength="256"/>
+        <Property Name="InProcessByUser" Type="Edm.String" MaxLength="256"/>
+        <Property Name="DraftIsProcessedByMe" Type="Edm.Boolean"/>
+      </EntityType>
+      <EntityType Name="ItemCategories">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="1" Nullable="false"/>
+        <NavigationProperty Name="texts" Type="Collection(POService.ItemCategories_texts)">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="localized" Type="POService.ItemCategories_texts">
+          <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="Languages">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <NavigationProperty Name="texts" Type="Collection(POService.Languages_texts)">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="localized" Type="POService.Languages_texts">
+          <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="MaterialGroups">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="9" Nullable="false"/>
+        <NavigationProperty Name="texts" Type="Collection(POService.MaterialGroups_texts)">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="localized" Type="POService.MaterialGroups_texts">
+          <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="Materials">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="40" Nullable="false"/>
+        <NavigationProperty Name="texts" Type="Collection(POService.Materials_texts)">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="localized" Type="POService.Materials_texts">
+          <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="Plants">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="9" Nullable="false"/>
+        <NavigationProperty Name="texts" Type="Collection(POService.Plants_texts)">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="localized" Type="POService.Plants_texts">
+          <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="PurchaseOrderItems">
+        <Key>
+          <PropertyRef Name="ID"/>
+          <PropertyRef Name="IsActiveEntity"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="purchaseOrder" Type="Edm.String" MaxLength="10"/>
+        <Property Name="purchaseOrderVersion" Type="Edm.Int32"/>
+        <Property Name="purchaseOrderItem" Type="Edm.Int32"/>
+        <NavigationProperty Name="purchaseOrderItemCat" Type="POService.ItemCategories">
+          <ReferentialConstraint Property="purchaseOrderItemCat_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="purchaseOrderItemCat_code" Type="Edm.String" MaxLength="1"/>
+        <NavigationProperty Name="material" Type="POService.Materials">
+          <ReferentialConstraint Property="material_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="material_code" Type="Edm.String" MaxLength="40"/>
+        <NavigationProperty Name="materialGroup" Type="POService.MaterialGroups">
+          <ReferentialConstraint Property="materialGroup_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="materialGroup_code" Type="Edm.String" MaxLength="9"/>
+        <NavigationProperty Name="plant" Type="POService.Plants">
+          <ReferentialConstraint Property="plant_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="plant_code" Type="Edm.String" MaxLength="9"/>
+        <NavigationProperty Name="supplierMaterial" Type="POService.Materials">
+          <ReferentialConstraint Property="supplierMaterial_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="supplierMaterial_code" Type="Edm.String" MaxLength="40"/>
+        <Property Name="orderQuantity" Type="Edm.Decimal" Scale="3" Precision="13"/>
+        <Property Name="quantityUnit" Type="Edm.String" MaxLength="3"/>
+        <Property Name="orderPrice" Type="Edm.Decimal" Scale="2" Precision="11"/>
+        <NavigationProperty Name="documentCurrency" Type="POService.Currencies">
+          <ReferentialConstraint Property="documentCurrency_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="documentCurrency_code" Type="Edm.String" MaxLength="3"/>
+        <Property Name="priceUnit" Type="Edm.Decimal" Scale="0" Precision="5"/>
+        <Property Name="netValue" Type="Edm.Decimal" Scale="4" Precision="23"/>
+        <Property Name="grossValue" Type="Edm.Decimal" Scale="4" Precision="23"/>
+        <Property Name="dateOfDelivery" Type="Edm.Date"/>
+        <Property Name="scheduleLineInc" Type="Edm.String" MaxLength="1"/>
+        <Property Name="confirmationOrder" Type="Edm.String" MaxLength="10"/>
+        <Property Name="confirmationInc" Type="Edm.String" MaxLength="1"/>
+        <Property Name="confirmedQuantity" Type="Edm.Decimal" Scale="3" Precision="13"/>
+        <Property Name="confirmedPrice" Type="Edm.Decimal" Scale="2" Precision="11"/>
+        <Property Name="confirmedDateOfDelivery" Type="Edm.Date"/>
+        <Property Name="goodReceipt" Type="Edm.String" MaxLength="25"/>
+        <Property Name="unloadingPoint" Type="Edm.String" MaxLength="12"/>
+        <Property Name="incoTermVerion" Type="Edm.String" MaxLength="4"/>
+        <Property Name="incoTermClassification" Type="Edm.String" MaxLength="3"/>
+        <Property Name="incoTermLocation1" Type="Edm.String" MaxLength="70"/>
+        <Property Name="incoTermLocation2" Type="Edm.String" MaxLength="70"/>
+        <Property Name="longPlainText" Type="Edm.String"/>
+        <NavigationProperty Name="deliveryAddress" Type="POService.Addresses">
+          <ReferentialConstraint Property="deliveryAddress_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="deliveryAddress_code" Type="Edm.String"/>
+        <NavigationProperty Name="parentPurchaseOrder" Type="POService.PurchaseOrders" Partner="items">
+          <ReferentialConstraint Property="parentPurchaseOrder_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="parentPurchaseOrder_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="attachments" Type="Collection(POService.Attachments)" Partner="parentOrderItem"/>
+        <NavigationProperty Name="scheduleLines" Type="Collection(POService.ScheduleLines)" Partner="parentOrderItem">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+        <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Type="POService.DraftAdministrativeData" ContainsTarget="true"/>
+        <NavigationProperty Name="SiblingEntity" Type="POService.PurchaseOrderItems"/>
+      </EntityType>
+      <EntityType Name="PurchaseOrderStatuses">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="2" Nullable="false"/>
+        <NavigationProperty Name="texts" Type="Collection(POService.PurchaseOrderStatuses_texts)">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="localized" Type="POService.PurchaseOrderStatuses_texts">
+          <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="PurchaseOrders">
+        <Key>
+          <PropertyRef Name="ID"/>
+          <PropertyRef Name="IsActiveEntity"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="purchaseOrder" Type="Edm.String" MaxLength="10"/>
+        <Property Name="purchaseOrderVersion" Type="Edm.Int32"/>
+        <Property Name="purchaseOrderDesc" Type="Edm.String" MaxLength="100"/>
+        <NavigationProperty Name="purchaseOrderStatus" Type="POService.PurchaseOrderStatuses">
+          <ReferentialConstraint Property="purchaseOrderStatus_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="purchaseOrderStatus_code" Type="Edm.String" MaxLength="2"/>
+        <Property Name="purchaseOrderDate" Type="Edm.Date"/>
+        <Property Name="title" Type="Edm.String"/>
+        <NavigationProperty Name="language" Type="POService.Languages">
+          <ReferentialConstraint Property="language_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="language_code" Type="Edm.String" MaxLength="14"/>
+        <Property Name="supplier" Type="Edm.String" MaxLength="10"/>
+        <Property Name="supplierName" Type="Edm.String" MaxLength="35"/>
+        <NavigationProperty Name="supplierAddress" Type="POService.Addresses">
+          <ReferentialConstraint Property="supplierAddress_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="supplierAddress_code" Type="Edm.String"/>
+        <Property Name="totalAmount" Type="Edm.Decimal" Scale="4" Precision="23"/>
+        <NavigationProperty Name="documentCurrency" Type="POService.Currencies">
+          <ReferentialConstraint Property="documentCurrency_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="documentCurrency_code" Type="Edm.String" MaxLength="3"/>
+        <Property Name="exchangeRate" Type="Edm.Decimal" Scale="5" Precision="9"/>
+        <NavigationProperty Name="purchasingOrganization" Type="POService.PurchasingOrganizations">
+          <ReferentialConstraint Property="purchasingOrganization_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="purchasingOrganization_code" Type="Edm.String" MaxLength="4"/>
+        <NavigationProperty Name="purchasingGroup" Type="POService.PurchasingGroups">
+          <ReferentialConstraint Property="purchasingGroup_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="purchasingGroup_code" Type="Edm.String" MaxLength="3"/>
+        <NavigationProperty Name="companyCode" Type="POService.CompanyCodes">
+          <ReferentialConstraint Property="companyCode_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="companyCode_code" Type="Edm.String" MaxLength="4"/>
+        <Property Name="orderConfirmation" Type="Edm.String" MaxLength="10"/>
+        <Property Name="incoTermVerion" Type="Edm.String" MaxLength="4"/>
+        <Property Name="incoTermClassification" Type="Edm.String" MaxLength="3"/>
+        <Property Name="incoTermLocation1" Type="Edm.String" MaxLength="70"/>
+        <Property Name="incoTermLocation2" Type="Edm.String" MaxLength="70"/>
+        <NavigationProperty Name="termOfPayment" Type="POService.TermPayments">
+          <ReferentialConstraint Property="termOfPayment_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="termOfPayment_code" Type="Edm.String" MaxLength="4"/>
+        <Property Name="netPaymentTerm" Type="Edm.Decimal" Scale="0" Precision="3"/>
+        <Property Name="cashDiscount1Days" Type="Edm.Decimal" Scale="0" Precision="3"/>
+        <Property Name="cashDiscount1Percent" Type="Edm.Decimal" Scale="0" Precision="5"/>
+        <Property Name="cashDiscount2Days" Type="Edm.Decimal" Scale="0" Precision="3"/>
+        <Property Name="cashDiscount2Percent" Type="Edm.Decimal" Scale="0" Precision="5"/>
+        <Property Name="dateOfDelivery" Type="Edm.Date"/>
+        <Property Name="startPeriod" Type="Edm.Date"/>
+        <Property Name="endPeriod" Type="Edm.Date"/>
+        <Property Name="plainLongText" Type="Edm.String"/>
+        <Property Name="contactPerson_code" Type="Edm.String" MaxLength="3"/>
+        <NavigationProperty Name="deliveryAddress" Type="POService.Addresses">
+          <ReferentialConstraint Property="deliveryAddress_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="deliveryAddress_code" Type="Edm.String"/>
+        <NavigationProperty Name="attachments" Type="Collection(POService.Attachments)"/>
+        <NavigationProperty Name="items" Type="Collection(POService.PurchaseOrderItems)" Partner="parentPurchaseOrder">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+        <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Type="POService.DraftAdministrativeData" ContainsTarget="true"/>
+        <NavigationProperty Name="SiblingEntity" Type="POService.PurchaseOrders"/>
+      </EntityType>
+      <EntityType Name="PurchasingGroups">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+        <NavigationProperty Name="texts" Type="Collection(POService.PurchasingGroups_texts)">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="localized" Type="POService.PurchasingGroups_texts">
+          <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="PurchasingOrganizations">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="4" Nullable="false"/>
+        <NavigationProperty Name="texts" Type="Collection(POService.PurchasingOrganizations_texts)">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="localized" Type="POService.PurchasingOrganizations_texts">
+          <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="ScheduleLines">
+        <Key>
+          <PropertyRef Name="ID"/>
+          <PropertyRef Name="IsActiveEntity"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="purchaseOrder" Type="Edm.String" MaxLength="10"/>
+        <Property Name="purchaseOrderVersion" Type="Edm.Int32"/>
+        <Property Name="purchaseOrderItem" Type="Edm.Int32"/>
+        <Property Name="scheduleLine" Type="Edm.Int32"/>
+        <Property Name="dateOfDeliveryCategory" Type="Edm.String" MaxLength="1"/>
+        <Property Name="dateOfDelivery" Type="Edm.Date"/>
+        <Property Name="scheduleLineQuantity" Type="Edm.Decimal" Scale="3" Precision="13"/>
+        <Property Name="quantityUnit" Type="Edm.String" MaxLength="3"/>
+        <Property Name="confirmedQuantity" Type="Edm.Decimal" Scale="3" Precision="13"/>
+        <Property Name="confirmedDateOfDelivery" Type="Edm.Date"/>
+        <NavigationProperty Name="parentOrderItem" Type="POService.PurchaseOrderItems" Partner="scheduleLines">
+          <ReferentialConstraint Property="parentOrderItem_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="parentOrderItem_ID" Type="Edm.Guid"/>
+        <Property Name="IsActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="true"/>
+        <Property Name="HasActiveEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <Property Name="HasDraftEntity" Type="Edm.Boolean" Nullable="false" DefaultValue="false"/>
+        <NavigationProperty Name="DraftAdministrativeData" Type="POService.DraftAdministrativeData" ContainsTarget="true"/>
+        <NavigationProperty Name="SiblingEntity" Type="POService.ScheduleLines"/>
+      </EntityType>
+      <EntityType Name="TermPayments">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="4" Nullable="false"/>
+        <NavigationProperty Name="texts" Type="Collection(POService.TermPayments_texts)">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="localized" Type="POService.TermPayments_texts">
+          <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="CompanyCodes_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="4" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="Currencies_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="ItemCategories_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="1" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="Languages_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="14" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="MaterialGroups_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="9" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="Materials_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="40" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="Plants_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="9" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="PurchaseOrderStatuses_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="2" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="PurchasingGroups_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="PurchasingOrganizations_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="4" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="TermPayments_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="4" Nullable="false"/>
+      </EntityType>
+      <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="POService.PurchaseOrderItems"/>
+        <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+        <ReturnType Type="POService.PurchaseOrderItems"/>
+      </Action>
+      <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="POService.PurchaseOrders"/>
+        <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+        <ReturnType Type="POService.PurchaseOrders"/>
+      </Action>
+      <Action Name="draftPrepare" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="POService.ScheduleLines"/>
+        <Parameter Name="SideEffectsQualifier" Type="Edm.String"/>
+        <ReturnType Type="POService.ScheduleLines"/>
+      </Action>
+      <Action Name="draftActivate" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="POService.PurchaseOrders"/>
+        <ReturnType Type="POService.PurchaseOrders"/>
+      </Action>
+      <Action Name="draftEdit" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="POService.PurchaseOrders"/>
+        <Parameter Name="PreserveChanges" Type="Edm.Boolean"/>
+        <ReturnType Type="POService.PurchaseOrders"/>
+      </Action>
+      <Annotations Target="POService.Addresses/code">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.Attachments/purchaseOrder">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.Attachments/purchaseOrderVersion">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.Attachments/purchaseOrderItem">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.Attachments/fileId">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.CompanyCodes">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="POService.CompanyCodes/name">
+        <Annotation Term="Common.Label" String="Nombre"/>
+      </Annotations>
+      <Annotations Target="POService.CompanyCodes/descr">
+        <Annotation Term="Common.Label" String="Descripción"/>
+      </Annotations>
+      <Annotations Target="POService.CompanyCodes/code">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.Currencies">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="POService.Currencies/name">
+        <Annotation Term="Common.Label" String="Nombre"/>
+      </Annotations>
+      <Annotations Target="POService.Currencies/descr">
+        <Annotation Term="Common.Label" String="Descripción"/>
+      </Annotations>
+      <Annotations Target="POService.Currencies/code">
+        <Annotation Term="Common.Text" Path="name"/>
+        <Annotation Term="Common.Label" String="Código de moneda"/>
+      </Annotations>
+      <Annotations Target="POService.Currencies/symbol">
+        <Annotation Term="Common.Label" String="Símbolo de moneda"/>
+      </Annotations>
+      <Annotations Target="POService.DraftAdministrativeData">
+        <Annotation Term="Common.Label" String="Datos administrativos en borrador"/>
+      </Annotations>
+      <Annotations Target="POService.DraftAdministrativeData/DraftUUID">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+        <Annotation Term="Common.Label" String="Borrador (ID técnico)"/>
+      </Annotations>
+      <Annotations Target="POService.DraftAdministrativeData/CreationDateTime">
+        <Annotation Term="Common.Label" String="Borrador creado el"/>
+      </Annotations>
+      <Annotations Target="POService.DraftAdministrativeData/CreatedByUser">
+        <Annotation Term="Common.Label" String="Borrador creado por"/>
+      </Annotations>
+      <Annotations Target="POService.DraftAdministrativeData/DraftIsCreatedByMe">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+        <Annotation Term="Common.Label" String="Borrador creado por mí"/>
+      </Annotations>
+      <Annotations Target="POService.DraftAdministrativeData/LastChangeDateTime">
+        <Annotation Term="Common.Label" String="Fecha del último cambio en borrador"/>
+      </Annotations>
+      <Annotations Target="POService.DraftAdministrativeData/LastChangedByUser">
+        <Annotation Term="Common.Label" String="Autor del último cambio en borrador"/>
+      </Annotations>
+      <Annotations Target="POService.DraftAdministrativeData/InProcessByUser">
+        <Annotation Term="Common.Label" String="Borrador en proceso por"/>
+      </Annotations>
+      <Annotations Target="POService.DraftAdministrativeData/DraftIsProcessedByMe">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+        <Annotation Term="Common.Label" String="Borrador en proceso por mí"/>
+      </Annotations>
+      <Annotations Target="POService.ItemCategories">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="POService.ItemCategories/name">
+        <Annotation Term="Common.Label" String="Nombre"/>
+      </Annotations>
+      <Annotations Target="POService.ItemCategories/descr">
+        <Annotation Term="Common.Label" String="Descripción"/>
+      </Annotations>
+      <Annotations Target="POService.ItemCategories/code">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.Languages">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="POService.Languages/name">
+        <Annotation Term="Common.Label" String="Nombre"/>
+      </Annotations>
+      <Annotations Target="POService.Languages/descr">
+        <Annotation Term="Common.Label" String="Descripción"/>
+      </Annotations>
+      <Annotations Target="POService.Languages/code">
+        <Annotation Term="Common.Text" Path="name"/>
+        <Annotation Term="Common.Label" String="Código de idioma"/>
+      </Annotations>
+      <Annotations Target="POService.MaterialGroups">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="POService.MaterialGroups/name">
+        <Annotation Term="Common.Label" String="Nombre"/>
+      </Annotations>
+      <Annotations Target="POService.MaterialGroups/descr">
+        <Annotation Term="Common.Label" String="Descripción"/>
+      </Annotations>
+      <Annotations Target="POService.MaterialGroups/code">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.Materials">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="POService.Materials/name">
+        <Annotation Term="Common.Label" String="Nombre"/>
+      </Annotations>
+      <Annotations Target="POService.Materials/descr">
+        <Annotation Term="Common.Label" String="Descripción"/>
+      </Annotations>
+      <Annotations Target="POService.Materials/code">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.Plants">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="POService.Plants/name">
+        <Annotation Term="Common.Label" String="Nombre"/>
+      </Annotations>
+      <Annotations Target="POService.Plants/descr">
+        <Annotation Term="Common.Label" String="Descripción"/>
+      </Annotations>
+      <Annotations Target="POService.Plants/code">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.EntityContainer/PurchaseOrderItems">
+        <Annotation Term="Common.DraftNode">
+          <Record Type="Common.DraftNodeType">
+            <PropertyValue Property="PreparationAction" String="POService.draftPrepare"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderItems/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Fecha de creación"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderItems/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="ID único de usuario"/>
+        <Annotation Term="Common.Label" String="Creado por"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderItems/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Modificado el"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderItems/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="ID único de usuario"/>
+        <Annotation Term="Common.Label" String="Modificado por"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderItems/purchaseOrder">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderItems/purchaseOrderVersion">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderItems/purchaseOrderItem">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderItems/purchaseOrderItemCat_code">
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="ItemCategories"/>
+            <PropertyValue Property="CollectionPath" String="ItemCategories"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="purchaseOrderItemCat_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderItems/material_code">
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="Materials"/>
+            <PropertyValue Property="CollectionPath" String="Materials"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="material_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderItems/materialGroup_code">
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="MaterialGroups"/>
+            <PropertyValue Property="CollectionPath" String="MaterialGroups"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="materialGroup_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderItems/plant_code">
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="Plants"/>
+            <PropertyValue Property="CollectionPath" String="Plants"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="plant_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderItems/supplierMaterial_code">
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="Materials"/>
+            <PropertyValue Property="CollectionPath" String="Materials"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="supplierMaterial_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderItems/documentCurrency">
+        <Annotation Term="Common.Label" String="Moneda"/>
+        <Annotation Term="Core.Description" String="Código de moneda según especificado por ISO 4217"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderItems/documentCurrency_code">
+        <Annotation Term="Common.Label" String="Moneda"/>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="Moneda"/>
+            <PropertyValue Property="CollectionPath" String="Currencies"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="documentCurrency_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Core.Description" String="Código de moneda según especificado por ISO 4217"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderItems/IsActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderItems/HasActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderItems/HasDraftEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderItems/DraftAdministrativeData">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderStatuses">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderStatuses/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Fecha de creación"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderStatuses/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="ID único de usuario"/>
+        <Annotation Term="Common.Label" String="Creado por"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderStatuses/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Modificado el"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderStatuses/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="ID único de usuario"/>
+        <Annotation Term="Common.Label" String="Modificado por"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderStatuses/name">
+        <Annotation Term="Common.Label" String="Nombre"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderStatuses/descr">
+        <Annotation Term="Common.Label" String="Descripción"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderStatuses/code">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.EntityContainer/PurchaseOrders">
+        <Annotation Term="Common.DraftRoot">
+          <Record Type="Common.DraftRootType">
+            <PropertyValue Property="ActivationAction" String="POService.draftActivate"/>
+            <PropertyValue Property="EditAction" String="POService.draftEdit"/>
+            <PropertyValue Property="PreparationAction" String="POService.draftPrepare"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrders/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Fecha de creación"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrders/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="ID único de usuario"/>
+        <Annotation Term="Common.Label" String="Creado por"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrders/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Modificado el"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrders/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="ID único de usuario"/>
+        <Annotation Term="Common.Label" String="Modificado por"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrders/purchaseOrder">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrders/purchaseOrderVersion">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrders/purchaseOrderStatus_code">
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="PurchaseOrderStatuses"/>
+            <PropertyValue Property="CollectionPath" String="PurchaseOrderStatuses"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="purchaseOrderStatus_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrders/language">
+        <Annotation Term="Common.Label" String="Idioma"/>
+        <Annotation Term="Core.Description" String="Código de idioma según especificado por ISO 639-1"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrders/language_code">
+        <Annotation Term="Common.Label" String="Idioma"/>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="Idioma"/>
+            <PropertyValue Property="CollectionPath" String="Languages"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="language_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Core.Description" String="Código de idioma según especificado por ISO 639-1"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrders/supplier">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrders/documentCurrency">
+        <Annotation Term="Common.Label" String="Moneda"/>
+        <Annotation Term="Core.Description" String="Código de moneda según especificado por ISO 4217"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrders/documentCurrency_code">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+        <Annotation Term="Common.Label" String="Moneda"/>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="Moneda"/>
+            <PropertyValue Property="CollectionPath" String="Currencies"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="documentCurrency_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+        <Annotation Term="Core.Description" String="Código de moneda según especificado por ISO 4217"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrders/purchasingOrganization_code">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="PurchasingOrganizations"/>
+            <PropertyValue Property="CollectionPath" String="PurchasingOrganizations"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="purchasingOrganization_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrders/purchasingGroup_code">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="PurchasingGroups"/>
+            <PropertyValue Property="CollectionPath" String="PurchasingGroups"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="purchasingGroup_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrders/companyCode_code">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="CompanyCodes"/>
+            <PropertyValue Property="CollectionPath" String="CompanyCodes"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="companyCode_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrders/termOfPayment_code">
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="TermPayments"/>
+            <PropertyValue Property="CollectionPath" String="TermPayments"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="termOfPayment_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrders/IsActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrders/HasActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrders/HasDraftEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrders/DraftAdministrativeData">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="POService.PurchasingGroups">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="POService.PurchasingGroups/name">
+        <Annotation Term="Common.Label" String="Nombre"/>
+      </Annotations>
+      <Annotations Target="POService.PurchasingGroups/descr">
+        <Annotation Term="Common.Label" String="Descripción"/>
+      </Annotations>
+      <Annotations Target="POService.PurchasingGroups/code">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.PurchasingOrganizations">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="POService.PurchasingOrganizations/name">
+        <Annotation Term="Common.Label" String="Nombre"/>
+      </Annotations>
+      <Annotations Target="POService.PurchasingOrganizations/descr">
+        <Annotation Term="Common.Label" String="Descripción"/>
+      </Annotations>
+      <Annotations Target="POService.PurchasingOrganizations/code">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.EntityContainer/ScheduleLines">
+        <Annotation Term="Common.DraftNode">
+          <Record Type="Common.DraftNodeType">
+            <PropertyValue Property="PreparationAction" String="POService.draftPrepare"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="POService.ScheduleLines/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Fecha de creación"/>
+      </Annotations>
+      <Annotations Target="POService.ScheduleLines/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="ID único de usuario"/>
+        <Annotation Term="Common.Label" String="Creado por"/>
+      </Annotations>
+      <Annotations Target="POService.ScheduleLines/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="Modificado el"/>
+      </Annotations>
+      <Annotations Target="POService.ScheduleLines/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="ID único de usuario"/>
+        <Annotation Term="Common.Label" String="Modificado por"/>
+      </Annotations>
+      <Annotations Target="POService.ScheduleLines/purchaseOrder">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.ScheduleLines/purchaseOrderVersion">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.ScheduleLines/purchaseOrderItem">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.ScheduleLines/scheduleLine">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.ScheduleLines/IsActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="POService.ScheduleLines/HasActiveEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="POService.ScheduleLines/HasDraftEntity">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="POService.ScheduleLines/DraftAdministrativeData">
+        <Annotation Term="UI.Hidden" Bool="true"/>
+      </Annotations>
+      <Annotations Target="POService.TermPayments">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="POService.TermPayments/name">
+        <Annotation Term="Common.Label" String="Nombre"/>
+      </Annotations>
+      <Annotations Target="POService.TermPayments/descr">
+        <Annotation Term="Common.Label" String="Descripción"/>
+      </Annotations>
+      <Annotations Target="POService.TermPayments/code">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.CompanyCodes_texts/name">
+        <Annotation Term="Common.Label" String="Nombre"/>
+      </Annotations>
+      <Annotations Target="POService.CompanyCodes_texts/descr">
+        <Annotation Term="Common.Label" String="Descripción"/>
+      </Annotations>
+      <Annotations Target="POService.CompanyCodes_texts/code">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.Currencies_texts/name">
+        <Annotation Term="Common.Label" String="Nombre"/>
+      </Annotations>
+      <Annotations Target="POService.Currencies_texts/descr">
+        <Annotation Term="Common.Label" String="Descripción"/>
+      </Annotations>
+      <Annotations Target="POService.Currencies_texts/code">
+        <Annotation Term="Common.Text" Path="name"/>
+        <Annotation Term="Common.Label" String="Código de moneda"/>
+      </Annotations>
+      <Annotations Target="POService.ItemCategories_texts/name">
+        <Annotation Term="Common.Label" String="Nombre"/>
+      </Annotations>
+      <Annotations Target="POService.ItemCategories_texts/descr">
+        <Annotation Term="Common.Label" String="Descripción"/>
+      </Annotations>
+      <Annotations Target="POService.ItemCategories_texts/code">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.Languages_texts/name">
+        <Annotation Term="Common.Label" String="Nombre"/>
+      </Annotations>
+      <Annotations Target="POService.Languages_texts/descr">
+        <Annotation Term="Common.Label" String="Descripción"/>
+      </Annotations>
+      <Annotations Target="POService.Languages_texts/code">
+        <Annotation Term="Common.Text" Path="name"/>
+        <Annotation Term="Common.Label" String="Código de idioma"/>
+      </Annotations>
+      <Annotations Target="POService.MaterialGroups_texts/name">
+        <Annotation Term="Common.Label" String="Nombre"/>
+      </Annotations>
+      <Annotations Target="POService.MaterialGroups_texts/descr">
+        <Annotation Term="Common.Label" String="Descripción"/>
+      </Annotations>
+      <Annotations Target="POService.MaterialGroups_texts/code">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.Materials_texts/name">
+        <Annotation Term="Common.Label" String="Nombre"/>
+      </Annotations>
+      <Annotations Target="POService.Materials_texts/descr">
+        <Annotation Term="Common.Label" String="Descripción"/>
+      </Annotations>
+      <Annotations Target="POService.Materials_texts/code">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.Plants_texts/name">
+        <Annotation Term="Common.Label" String="Nombre"/>
+      </Annotations>
+      <Annotations Target="POService.Plants_texts/descr">
+        <Annotation Term="Common.Label" String="Descripción"/>
+      </Annotations>
+      <Annotations Target="POService.Plants_texts/code">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderStatuses_texts/name">
+        <Annotation Term="Common.Label" String="Nombre"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderStatuses_texts/descr">
+        <Annotation Term="Common.Label" String="Descripción"/>
+      </Annotations>
+      <Annotations Target="POService.PurchaseOrderStatuses_texts/code">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.PurchasingGroups_texts/name">
+        <Annotation Term="Common.Label" String="Nombre"/>
+      </Annotations>
+      <Annotations Target="POService.PurchasingGroups_texts/descr">
+        <Annotation Term="Common.Label" String="Descripción"/>
+      </Annotations>
+      <Annotations Target="POService.PurchasingGroups_texts/code">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.PurchasingOrganizations_texts/name">
+        <Annotation Term="Common.Label" String="Nombre"/>
+      </Annotations>
+      <Annotations Target="POService.PurchasingOrganizations_texts/descr">
+        <Annotation Term="Common.Label" String="Descripción"/>
+      </Annotations>
+      <Annotations Target="POService.PurchasingOrganizations_texts/code">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+      <Annotations Target="POService.TermPayments_texts/name">
+        <Annotation Term="Common.Label" String="Nombre"/>
+      </Annotations>
+      <Annotations Target="POService.TermPayments_texts/descr">
+        <Annotation Term="Common.Label" String="Descripción"/>
+      </Annotations>
+      <Annotations Target="POService.TermPayments_texts/code">
+        <Annotation Term="Common.FieldControl" EnumMember="Common.FieldControlType/Mandatory"/>
+      </Annotations>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>
