@@ -58,6 +58,10 @@ modules:
       - aucomtriminhleui.zip
       name: ui_app
       target-path: resources/
+    - artifacts:
+      - aucomuseruserui.zip
+      name: aucomuseruserui
+      target-path: resources/
 - name: ui_app
   type: html5
   path: ui
@@ -81,6 +85,16 @@ modules:
         name: content-deploy-key
   - name: po_uaa
   - name: po_html_repo_host
+- name: aucomuseruserui
+  type: html5
+  path: user_ui
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
 resources:
 - name: po_db
   type: com.sap.xs.hdi-container

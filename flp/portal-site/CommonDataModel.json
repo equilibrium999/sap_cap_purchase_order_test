@@ -30,6 +30,10 @@
 					"id": "au.com.triminhle.ui-0-1621686355985",
 					"appId": "au.com.triminhle.ui",
 					"vizId": "po-display"
+				}, {
+					"id": "au.com.user.userui-1-1621691616437",
+					"appId": "au.com.user.userui",
+					"vizId": "user-display"
 				}]
 			}
 		}],

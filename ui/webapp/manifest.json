@@ -126,5 +126,10 @@
                 }
             }
         }
+    },
+    "sap.platform.cf": {
+        "oAuthScopes": [
+            "$XSAPPNAME.admin"
+        ]
     }
 }

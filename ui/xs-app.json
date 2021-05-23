@@ -1,19 +1,45 @@
 {
-  "welcomeFile": "/index.html",
-  "authenticationMethod": "route",
-  "routes": [
-      {
-		"source": "^/odata/v4/(.*)$",
-		"target": "/odata/v4/$1",
-		"authenticationType": "xsuaa",
-		"destination": "srv-api",
-		"csrfProtection": false
-	},
-    {
-      "source": "^(.*)$",
-      "target": "$1",
-      "service": "html5-apps-repo-rt",
-      "authenticationType": "xsuaa"
-    }
-  ]
+    "welcomeFile": "/index.html",
+    "authenticationMethod": "route",
+    "routes": [
+        {
+            "source": "^/odata/v4/(.*)$",
+            "target": "/odata/v4/$1",
+            "authenticationType": "xsuaa",
+            "destination": "srv-api",
+            "csrfProtection": false,
+            "scope": {
+                "GET": [
+                    "$XSAPPNAME.admin",
+                    "$XSAPPNAME.user"
+                ],
+                "PATCH": [
+                    "$XSAPPNAME.admin",
+                    "$XSAPPNAME.user"
+                ],
+                "POST": [
+                    "$XSAPPNAME.admin",
+                    "$XSAPPNAME.user"
+                ],
+                "PUT": [
+                    "$XSAPPNAME.admin",
+                    "$XSAPPNAME.user"
+                ],
+                "DELETE": [
+                    "$XSAPPNAME.admin",
+                    "$XSAPPNAME.user"
+                ],
+                "default": [
+                    "$XSAPPNAME.admin",
+                    "$XSAPPNAME.user"
+                ]
+            }
+        },
+        {
+            "source": "^(.*)$",
+            "target": "$1",
+            "service": "html5-apps-repo-rt",
+            "authenticationType": "xsuaa"
+        }
+    ]
 }
